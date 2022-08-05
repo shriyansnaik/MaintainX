@@ -12,13 +12,20 @@ import CustomInput from './common/CustomInput';
 import CustomButton from './common//CustomButton';
 import {useNavigation} from '@react-navigation/native';
 import axios from 'axios';
-import {LOGIN_SCREEN_API} from '../extras/APIS';
-
-const login = (username, password, navigation) => {
+import {LOGIN_SCREEN_API } from '../extras/APIS';
+const login = (username, password,navigation) => {
+  // const config = {
+  //   headers: {
+  //     'Content-Type': 'application/json',
+  //   },
+  // };
   const params = JSON.stringify({
-    username: username,
-    password: password,
-  });
+
+    "username": username,
+    
+    "password": password,
+    
+    });
   axios
     .post(LOGIN_SCREEN_API, params, {
       headers: {
@@ -27,12 +34,12 @@ const login = (username, password, navigation) => {
     })
     .then(function (response) {
       console.log(response.data);
-      navigation.navigate('MainApp');
+      navigation.navigate('MainApp')
     })
 
     .catch(function (error) {
-      console.log(error, 'Error Password');
-      alert('Oops! Wrong Password or Username!');
+      console.log(error,'Error Password');
+      alert('Oops! Wrong Password or Username!')
     });
 
   // axios
@@ -116,10 +123,7 @@ const LoginScreen = props => {
           secureTextEntry
         />
 
-        <CustomButton
-          text="Log In"
-          onPress={() => login(username, password, navigation)}
-        />
+        <CustomButton text="Log In" onPress={() => login(username, password,navigation)} />
 
         <CustomButton
           text="Forgot password?"

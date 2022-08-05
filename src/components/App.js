@@ -1,4 +1,3 @@
-/* eslint-disable prettier/prettier */
 import React from 'react';
 import MainAppRoutes from '../routes/MainAppRoutes';
 
