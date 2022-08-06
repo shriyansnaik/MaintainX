@@ -15,7 +15,7 @@ const WorkOrderCard = props => {
     style,
   } = props;
   return (
-    <>
+    <> 
       <TouchableOpacity
         onPress={onCardPress}
         style={[style, {width: '100%', padding: 10, backgroundColor: 'white', elevation: 3}]}>
