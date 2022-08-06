@@ -37,35 +37,40 @@ export default function RequestsScreen({navigation}) {
   ];
   return (
     <>
-      <View style={{backgroundColor: '#ffffff'}}>
-        <CustomText
-          text="Requests"
-          textColor={'black'}
-          textSize={20}
-          textWeight={700}
-          style={{padding: 15}}
-        />
+      <View style={{backgroundColor: '#ffffff', elevation: 5}}>
+        <View
+          style={{
+            flexDirection: 'row',
+            padding: 15,
+          }}>
+          <CustomText
+            text="Work Orders"
+            textColor={'black'}
+            textSize={18}
+            textWeight={700}
+          />
+        </View>
 
         <View style={{justifyContent: 'center', alignItems: 'center'}}>
           <View
             style={{
               flexDirection: 'row',
-              justifyContent: 'flex-start',
               width: '90%',
               paddingHorizontal: 10,
               backgroundColor: '#EFEBEB',
-              borderRadius: 10,
+              borderRadius: 15,
             }}>
             <Image
               style={{
-                height: 25,
-                width: 25,
+                height: 15,
+                width: 15,
                 alignSelf: 'center',
                 marginRight: 5,
               }}
               source={require('../assets/icons/loupe.png')}
             />
             <TextInput
+              style={{width: '100%', fontSize: 12, padding: 5}}
               placeholder="Search By WorkOrder Name"
               onChangeText={searchQuery => setSearchQuery(searchQuery)}
             />
@@ -101,6 +106,7 @@ export default function RequestsScreen({navigation}) {
           <>
             {item.title.toLowerCase().includes(searchQuery.toLowerCase(), 0) ? (
               <WorkOrderCard
+                style={{marginTop: 10, elevation: 5}}
                 title={item.title}
                 location={item.location}
                 asset={item.asset}
