@@ -157,7 +157,7 @@ const WorkOrdersScreen = ({navigation}) => {
                 priority={item.priority}
                 status={item.status}
                 onCardPress={() => navigation.navigate('Work Order Details')}
-                style={{marginTop: 10, elevation: 5}}
+                style={{marginTop: 10}}
               />
             ) : null}
           </>
