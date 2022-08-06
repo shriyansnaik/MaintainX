@@ -106,7 +106,7 @@ export default function RequestsScreen({navigation}) {
           <>
             {item.title.toLowerCase().includes(searchQuery.toLowerCase(), 0) ? (
               <WorkOrderCard
-                style={{marginTop: 10, elevation: 5}}
+                style={{marginTop: 10}}
                 title={item.title}
                 location={item.location}
                 asset={item.asset}

@@ -18,7 +18,7 @@ const WorkOrderCard = props => {
     <>
       <TouchableOpacity
         onPress={onCardPress}
-        style={[style, {width: '100%', padding: 10, backgroundColor: 'white'}]}>
+        style={[style, {width: '100%', padding: 10, backgroundColor: 'white', elevation: 3}]}>
         <View
           style={{
             flexDirection: 'row',
