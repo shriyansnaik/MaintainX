@@ -64,6 +64,7 @@ const TabStack = route => {
         name="Create Request"
         component={CreateRequestScreen}
         options={{
+          headerShadowVisible: false,
           tabBarIcon: ({focused}) => (
             <Image
               source={require('../assets/icons/plus.png')}

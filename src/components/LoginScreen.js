@@ -118,7 +118,8 @@ const LoginScreen = props => {
 
         <CustomButton
           text="Log In"
-          onPress={() => login(username, password, navigation)}
+          // onPress={() => login(username, password, navigation)}
+          onPress={() => navigation.navigate('MainApp')}
         />
 
         <CustomButton
