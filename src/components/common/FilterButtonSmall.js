@@ -10,6 +10,7 @@ const FilterButtonSmall = props => {
     iconColor,
     style,
     disabled = false,
+    textSize = 15
   } = props;
 
   return (
@@ -19,8 +20,8 @@ const FilterButtonSmall = props => {
       style={[styles.buttonStyle, style]}>
       <CustomText
         text={buttonTitle}
-        textWeight={500}
-        textSize={15}
+        textWeight={600}
+        textSize={textSize}
         textColor={textColor}
       />
       {expandable ? (
@@ -36,7 +37,7 @@ const FilterButtonSmall = props => {
 const styles = {
   buttonStyle: {
     alignSelf: 'baseline',
-    borderRadius: 10,
+    borderRadius: 5,
     padding: 7,
     flexDirection: 'row',
     justifyContent: 'center',

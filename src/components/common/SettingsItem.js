@@ -37,8 +37,9 @@ const SettingsItem = props => {
           borderBottomColor: '#00000065',
           borderBottomWidth: 0.5,
           // marginLeft: 35,
-          width: '90%',
-          alignSelf: 'center',
+          width: '85%',
+          alignSelf: 'flex-end',
+          // justifyContent: 'flex-end',
         }}
       />
     </TouchableOpacity>
@@ -55,7 +56,7 @@ const styles = {
   },
   textStyle: {
     color: 'black',
-    fontSize: 20,
+    fontSize: 16,
     marginLeft: 20,
     alignSelf: 'center',
   },
@@ -63,8 +64,8 @@ const styles = {
     marginLeft: 20,
   },
   imageStyle: {
-    width: 30,
-    height: 30,
+    width: 25,
+    height: 25,
     margin: 10,
   },
 };
