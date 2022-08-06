@@ -1,44 +1,3 @@
-/* eslint-disable prettier/prettier */
-// import { Text, View ,TouchableOpacity,StyleSheet} from 'react-native'
-// import React, { Component } from 'react'
-
-// const priorityButton=props=>{
-//    const{priorityText,onPress}=props
-//     return (
-//         <View>
-//        <TouchableOpacity
-//             style={styles.priorityButton}
-//             onPress={this.onPress}
-//           >
-//             <Text style={styles.priorityButtonText}>{priorityText}</Text>
-//           </TouchableOpacity>
-//         </View>
-//       )
-
-//   }
-//   const styles = StyleSheet.create({
-//     priorityButton: {
-//       alignItems: "center",
-//       backgroundColor: "#AEEBFF",
-//       position:'absolute',
-//       width:36,
-//       borderRadius:5,
-//       // left:306,
-//       // top:211,
-//       padding:3,
-//         },
-//     priorityButtonText:{
-//       fontSize:15,
-//       fontFamily:'Roboto',
-//       fontStyle:'normal',
-//       color:'#128FD4',
-//      fontWeight:'bold',
-//      lineHeight:18,
-
-//     },
-//   });
-
-//   export default priorityButton;
 import React from 'react';
 import {View, StyleSheet} from 'react-native';
 import {CustomText} from '.';
@@ -73,20 +32,18 @@ const PriorityButton = props => {
     <View
       style={[
         {
-          // backgroundColor: textStyle({priorityText}, 'Background'),
           justifyContent: 'center',
           alignItems: 'center',
-          paddingVertical: 5,
-          paddingHorizontal: 8,
+          paddingVertical: 3,
+          paddingHorizontal: 6,
           alignSelf: 'baseline',
-          borderRadius: 10,
-          margin: 10,
+          borderRadius: 5,
         },
         textStyle(priorityText, 'Background'),
       ]}>
       <CustomText
         text={priorityText}
-        textSize={15}
+        textSize={12}
         // style={textStyle({priorityText})}
         // style={{color: textStyle({priorityText})}}
         style={[textStyle(priorityText)]}
