@@ -10,40 +10,65 @@ import {
   FlatList,
 } from 'react-native';
 import {REQUESTS_API} from '../extras/APIS';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 import {CustomText, FilterButtonSmall, WorkOrderCard} from './common';
 
 export default function RequestsScreen({navigation}) {
   const [searchQuery, setSearchQuery] = useState('');
-  const DATA = [
-    {
-      title: '3D printer not working',
-      location: 'Building 2, 3rd floor, Desk 4',
-      asset: '3D Printer',
-      priority: 'Low',
-      status: 'open',
-    },
-    {
-      title: 'Projector not functioning',
-      location: 'Main Office',
-      asset: 'LG Projector',
-      priority: 'High',
-      status: 'open',
-    },
-    {
-      title: 'AC not working',
-      location: 'Ground floor Lobby',
-      asset: 'AC',
-      priority: 'Medium',
-      status: 'open',
-    },
-    // getRequests()
-  ];
-  const getRequests = async () => {
+  const [title, setTitle] = useState('');
+  const [location, setLocation] = useState('');
+  const [asset, setAsset] = useState("dummy asset ");
+  const [priority, setPriority] = useState('');
+  const [status, setStatus] = useState('');
+  const [DATA, setDATA] = useState([]);
+
+  const accessToken = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6InVzZXIxIiwicm9sZSI6InJlcXVlc3RlZSIsImludGVyZmFjZSI6e30sImlhdCI6MTY2MDEyNDMxMCwiZXhwIjoxNjY0OTI0MzEwfQ.hC0VJUzOWeC9B0IxbBgBzNAK4Oy-5vm-DgsBl3hXo94"
+
+  // const accessToken = AsyncStorage.getItem('token');
+
+  // const DATA = [
+  //   {
+  //     title: '3D printer not working',
+  //     location: 'Building 2, 3rd floor, Desk 4',
+  //     asset: '3D Printer',
+  //     priority: 'Low',
+  //     status: 'open',
+  //   },
+  //   {
+  //     title: 'Projector not functioning',
+  //     location: 'Main Office',
+  //     asset: 'LG Projector',
+  //     priority: 'High',
+  //     status: 'open',
+  //   },
+  //   {
+  //     title: 'AC not working',
+  //     location: 'Ground floor Lobby',
+  //     asset: 'AC',
+  //     priority: 'Medium',
+  //     status: 'open',
+  //   },
+  // ];
+
+  
+  useEffect(() => {
+    getRequests();
+}, [])
+
+  const getRequests = () => {
     axios
-    .get(REQUESTS_API)
+    .get(REQUESTS_API , {
+      headers: {
+        "access-token": `${accessToken}`,
+      },
+    })
     .then(function (response) {
       console.log(response.data);
+      setDATA(response.data);
     })
+    .catch(function (error) {
+      console.log(error, 'Request Screen');
+    });
   }
   return (
     <>
@@ -111,21 +136,21 @@ export default function RequestsScreen({navigation}) {
         </View>
       </View>
       <FlatList
-        data={DATA}
+        data={DATA.tickets}
         renderItem={({item}) => (
           <>
-            {item.title.toLowerCase().includes(searchQuery.toLowerCase(), 0) ? (
+            {item.subject.toLowerCase().includes(searchQuery.toLowerCase(), 0) ? (
               <WorkOrderCard
                 style={{marginTop: 10}}
-                title={item.title}
-                location={item.location}
-                asset={item.asset}
-                priority={item.priority}
+                title={item.subject}
+                location={item.company}
+                asset={item.subject}
+                priority={'Medium'}
                 status={item.status}
                 onCardPress={() =>
                   navigation.navigate('Request Details', {
-                    title: item.title,
-                    location: item.location,
+                    title: item.subject,
+                    location: item.company,
                     asset: item.asset,
                     priority: item.priority,
                     status: item.status,
@@ -133,6 +158,7 @@ export default function RequestsScreen({navigation}) {
                 }
               />
             ) : null}
+
           </>
         )}
       />

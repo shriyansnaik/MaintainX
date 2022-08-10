@@ -40,13 +40,15 @@ const login = (username, password, access_token, role, navigation) => {
   const storeData = async value => {
     try {
       // const jsonValue = JSON.stringify(value);
-      value = JSON.stringify(value,{
-        access_token: access_token,
-        role: role,
-      });
-      await AsyncStorage.setItem('token', access_token);
-      await AsyncStorage.setItem('role', role);
-      // console.log("came from async storage" + access_token);
+      // value = JSON.stringify(value,{
+      //   access_token: access_token,
+      //   role: role,
+      // });
+      await AsyncStorage.setItem('token', value.access_token);
+      await AsyncStorage.setItem('role', value.role);
+      const tokene = AsyncStorage.getItem('token');
+      console.log("came from async storage" + tokene);
+      // console.log("vLUW",value.access_token);
       // console.log("Role came from async storage" + role);
     } catch (e) {
       console.log(err);
