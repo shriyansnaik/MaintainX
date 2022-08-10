@@ -11,10 +11,18 @@ import {CustomText, PriorityButton} from '../components/common';
 import CustomInput from './common/CustomInput';
 import SelectPriorityButton from './common/SelectPriorityButton';
 import ImagePicker from 'react-native-image-crop-picker';
+import axios from 'axios';
+import {CREATE_TICKET_API} from '../extras/APIS';
 
 export default function CreateRequestScreen() {
   const [prioritySelected, setPrioritySelected] = useState('Low');
+  const [title, setTitle] = useState('default subject');
+  const [description, setDescription] = useState('default description');
+  const [assetName, setAssetName] = useState("dummy asset 0");
+  const [location, setLocation] = useState("from my laptop...");
   const [image, setImage] = useState(null);
+
+  const accessToken = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6InVzZXIxIiwicm9sZSI6InJlcXVlc3RlZSIsImludGVyZmFjZSI6e30sImlhdCI6MTY2MDA2NDU2NywiZXhwIjo0ODAwMDE2NjAwNjQ1Njd9.-dThzIUBEH9QHJONpnKPLD87zbDrNH6ye3MJk6B3BNE"
 
   const thisPriority = p => {
     return p == prioritySelected;
@@ -28,6 +36,32 @@ export default function CreateRequestScreen() {
       const imageUri = Platform.OS === 'ios' ? image.sourceURL : image.path;
       setImage(imageUri);
     });
+  };
+
+  const submitTicket = () => {
+    console.log(title, description);
+    const params = JSON.stringify({
+      subject: title,
+      description: description,
+      asset_name: assetName,
+      location: location,
+    });
+    axios
+      .post(CREATE_TICKET_API, params, {
+        headers: {
+          'content-type': 'application/json',
+          "access-token": `${accessToken}`,
+        },
+      })
+      .then(function (response) {
+        console.log(response.data);
+        // navigation.navigate('MainApp');
+      })
+
+      .catch(function (error) {
+        console.log(error, 'Axios error (create request screen)');
+        alert('something went wrong (create request screen)');
+      });
   };
 
   return (
@@ -138,6 +172,9 @@ export default function CreateRequestScreen() {
           </View>
         ) : null}
       </View>
+      <TouchableOpacity style={{}} onPress={() => submitTicket()}>
+        <CustomText text="Post" />
+      </TouchableOpacity>
     </ScrollView>
   );
 }
