@@ -15,31 +15,32 @@ import {CustomText, FilterButtonSmall, WorkOrderCard} from './common';
 export default function RequestsScreen({navigation}) {
   const [searchQuery, setSearchQuery] = useState('');
   const DATA = [
-    // {
-    //   title: '3D printer not working',
-    //   location: 'Building 2, 3rd floor, Desk 4',
-    //   asset: '3D Printer',
-    //   priority: 'Low',
-    //   status: 'open',
-    // },
-    // {
-    //   title: 'Projector not functioning',
-    //   location: 'Main Office',
-    //   asset: 'LG Projector',
-    //   priority: 'High',
-    //   status: 'open',
-    // },
-    // {
-    //   title: 'AC not working',
-    //   location: 'Ground floor Lobby',
-    //   asset: 'AC',
-    //   priority: 'Medium',
-    //   status: 'open',
-    // },
-    getRequests()
+    {
+      title: '3D printer not working',
+      location: 'Building 2, 3rd floor, Desk 4',
+      asset: '3D Printer',
+      priority: 'Low',
+      status: 'open',
+    },
+    {
+      title: 'Projector not functioning',
+      location: 'Main Office',
+      asset: 'LG Projector',
+      priority: 'High',
+      status: 'open',
+    },
+    {
+      title: 'AC not working',
+      location: 'Ground floor Lobby',
+      asset: 'AC',
+      priority: 'Medium',
+      status: 'open',
+    },
+    // getRequests()
   ];
   const getRequests = async () => {
-    axios.get(REQUESTS_API)
+    axios
+    .get(REQUESTS_API)
     .then(function (response) {
       console.log(response.data);
     })
@@ -53,7 +54,7 @@ export default function RequestsScreen({navigation}) {
             padding: 15,
           }}>
           <CustomText
-            text="Work Orders"
+            text="Requests"
             textColor={'black'}
             textSize={18}
             textWeight={700}

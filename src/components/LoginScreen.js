@@ -46,8 +46,8 @@ const login = (username, password, access_token, role, navigation) => {
       });
       await AsyncStorage.setItem('token', access_token);
       await AsyncStorage.setItem('role', role);
-      console.log("came from async storage" + access_token);
-      console.log("Role came from async storage" + role);
+      // console.log("came from async storage" + access_token);
+      // console.log("Role came from async storage" + role);
     } catch (e) {
       console.log(err);
     }
