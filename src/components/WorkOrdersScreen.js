@@ -1,4 +1,5 @@
 import React, {useState, useEffect} from 'react';
+import axios from 'axios';
 import {
   View,
   StyleSheet,
@@ -16,7 +17,23 @@ const WorkOrdersScreen = ({navigation}) => {
   const [searchQuery, setSearchQuery] = useState('');
   const [DATA, setDATA] = useState([]);
 
-  const accessToken = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6InVzZXIxIiwicm9sZSI6InJlcXVlc3RlZSIsImludGVyZmFjZSI6e30sImlhdCI6MTY2MDEyNDMxMCwiZXhwIjoxNjY0OTI0MzEwfQ.hC0VJUzOWeC9B0IxbBgBzNAK4Oy-5vm-DgsBl3hXo94"
+  // const accessToken = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6InVzZXIxIiwicm9sZSI6InJlcXVlc3RlZSIsImludGVyZmFjZSI6e30sImlhdCI6MTY2MDEyNDMxMCwiZXhwIjoxNjY0OTI0MzEwfQ.hC0VJUzOWeC9B0IxbBgBzNAK4Oy-5vm-DgsBl3hXo94"
+
+  useEffect(() => {
+    getData('token');
+  }, [])
+  const getData = async (key) => {
+    try {
+      const data = await AsyncStorage.getItem(key);
+      if (data !== null) {
+        console.log(data);
+        getRequests(data);
+        return data;
+      }
+    } catch (error) {
+      console.log(error);
+    }
+  };
 
   // const DATA = [
   //   {
@@ -35,15 +52,11 @@ const WorkOrdersScreen = ({navigation}) => {
   //   },
   // ];
 
-  useEffect(() => {
-    getRequests();
-}, [])
-
-const getRequests = () => {
+const getRequests = (tokenn) => {
   axios
   .get(WORK_ORDERS_API , {
     headers: {
-      "access-token": `${accessToken}`,
+      "access-token": tokenn,
     },
   })
   .then(function (response) {
@@ -51,7 +64,7 @@ const getRequests = () => {
     setDATA(response.data);
   })
   .catch(function (error) {
-    console.log(error, 'Request Screen');
+    console.log(error, 'Work Orders Screen');
   });
 }
 

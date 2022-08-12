@@ -15,17 +15,24 @@ import {CustomText, FilterButtonSmall, WorkOrderCard} from './common';
 
 export default function RequestsScreen({navigation}) {
   const [searchQuery, setSearchQuery] = useState('');
-  const [title, setTitle] = useState('');
-  const [location, setLocation] = useState('');
-  const [asset, setAsset] = useState("dummy asset ");
-  const [priority, setPriority] = useState('');
-  const [status, setStatus] = useState('');
   const [DATA, setDATA] = useState([]);
 
-  const accessToken = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6InVzZXIxIiwicm9sZSI6InJlcXVlc3RlZSIsImludGVyZmFjZSI6e30sImlhdCI6MTY2MDEyNDMxMCwiZXhwIjoxNjY0OTI0MzEwfQ.hC0VJUzOWeC9B0IxbBgBzNAK4Oy-5vm-DgsBl3hXo94"
-
-  // const accessToken = AsyncStorage.getItem('token');
-
+  useEffect(() => {
+    getData('token');
+  }, [])
+  const getData = async (key) => {
+    try {
+      const data = await AsyncStorage.getItem(key);
+      if (data !== null) {
+        getRequests(data);
+        // console.log(data);
+        return data;
+      }
+    } catch (error) {
+      console.log(error);
+    }
+  };
+  
   // const DATA = [
   //   {
   //     title: '3D printer not working',
@@ -50,20 +57,17 @@ export default function RequestsScreen({navigation}) {
   //   },
   // ];
 
-  
-  useEffect(() => {
-    getRequests();
-}, [])
 
-  const getRequests = () => {
+
+  const getRequests = (tokenn) => {
     axios
     .get(REQUESTS_API , {
       headers: {
-        "access-token": `${accessToken}`,
+        "access-token": tokenn,
       },
     })
     .then(function (response) {
-      console.log(response.data);
+      // console.log(response.data);
       setDATA(response.data);
     })
     .catch(function (error) {
