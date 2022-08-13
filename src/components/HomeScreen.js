@@ -6,40 +6,93 @@ import {
   Image,
   TouchableOpacity,
   Dimensions,
+  Modal,
 } from 'react-native';
-import React from 'react';
+import React, {useContext} from 'react';
 import {CustomText} from './common';
 import FilterItemButton from './common/FilterItemButton';
+import {GlobalStateContext} from '../routes/GlobalStateProvider';
+
 const {width} = Dimensions.get('screen');
 const Homescreen = ({navigation}) => {
+  const {modalVisible, setModalVisible} = useContext(GlobalStateContext);
+  const CreateScreenModal = () => {
+    return (
+      <Modal
+        animationType="slide"
+        transparent={true}
+        visible={modalVisible}
+        onRequestClose={() => {
+          setModalVisible(!modalVisible);
+        }}>
+        <TouchableOpacity
+          onPress={() => setModalVisible(!modalVisible)}
+          activeOpacity={1}
+          style={{
+            backgroundColor: '#00000030',
+            height: '100%',
+          }}></TouchableOpacity>
+        <View
+          style={{
+            width: '100%',
+            backgroundColor: '#ffffff',
+            position: 'absolute',
+            bottom: 0,
+            borderTopLeftRadius: 15,
+            borderTopRightRadius: 15,
+          }}>
+          <View
+            onPress={() => (
+              navigation.navigate('Create Request'), setModalVisible(false)
+            )}
+            style={{
+              padding: 15,
+              backgroundColor: '#FAFAFA',
+            }}>
+            <CustomText text="Create New" textWeight={700} textSize={15} />
+          </View>
+          <View
+            style={{
+              backgroundColor: '#ECECEC',
+              height: 1,
+            }}></View>
+          <TouchableOpacity
+            onPress={() => (
+              navigation.navigate('Create Request'), setModalVisible(false)
+            )}
+            // activeOpacity={1}
+            style={{
+              // backgroundColor: '#00000030',
+              height: '100%',
+            }}>
+            <View
+              style={{
+                flexDirection: 'row',
+                alignItems: 'center',
+                padding: 15,
+              }}>
+              <Image
+                style={{height: 25, width: 25, marginRight: 10}}
+                source={require('../assets/icons/workorder.png')}
+              />
+              <CustomText text="Request" textWeight={500} textSize={18} />
+            </View>
+          </TouchableOpacity>
+        </View>
+      </Modal>
+    );
+  };
   return (
     <ScrollView style={{flex: 1, width: '100%'}}>
-      {/* <View
-        style={{
-          width: '100%',
-          backgroundColor: '#ffffff',
-          flexDirection: 'row',
-          justifyContent: 'space-between',
-        }}>
-        <CustomText text={'Selec'} />
-        <View style={{flexDirection: 'row', justifyContent: 'space-around'}}>
-          <Image
-            style={{height: 25, width: 25}}
-            source={require('../assets/icons/about.png')}
-          />
-          <Image
-            style={{height: 25, width: 25}}
-            source={require('../assets/icons/about.png')}
-          />
-        </View>
-      </View> */}
+      <CreateScreenModal />
+
       <View
         style={{padding: 50, backgroundColor: '#F9B07B', alignItems: 'center'}}>
         <CustomText
           style={{marginBottom: 5}}
           textSize={18}
           textWeight={300}
-          text={'Let\'s Get Started with'}
+          text={"Let's Get Started with"}
         />
         <CustomText
           style={{marginBottom: 10}}
@@ -59,7 +112,8 @@ const Homescreen = ({navigation}) => {
         />
         <TouchableOpacity
           onPress={() => {
-            navigation.navigate('WorkOrderScreen')
+            navigation.navigate('WorkOrderScreen');
+            // console.log(modalVisible);
           }}
           style={{
             padding: 10,
@@ -84,7 +138,9 @@ const Homescreen = ({navigation}) => {
             padding: 10,
           }}>
           <CustomText text={'My Impact'} textSize={14} textWeight={800} />
-          <TouchableOpacity>
+          <TouchableOpacity
+          // onPress={()=>setModalVisible(!modalVisible)}
+          >
             <CustomText
               text={'See All Stats'}
               textSize={14}

@@ -41,7 +41,7 @@ const login = (username, password, navigation) => {
     try {
       await AsyncStorage.setItem('token', value.access_token);
       await AsyncStorage.setItem('role', value.role);
-    } catch (e) {
+    } catch (err) {
       console.log(err);
     }
   };
@@ -73,8 +73,8 @@ const LoginScreen = props => {
   const {} = props;
   const {} = styles;
 
-  const [username, setUsername] = useState('');
-  const [password, setPassword] = useState('');
+  const [username, setUsername] = useState('user1');
+  const [password, setPassword] = useState('1234');
 
   const {height} = useWindowDimensions();
   const navigation = useNavigation();

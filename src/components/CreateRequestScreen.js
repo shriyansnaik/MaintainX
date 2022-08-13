@@ -6,23 +6,40 @@ import {
   Image,
   ScrollView,
 } from 'react-native';
-import React, {useState} from 'react';
+import React, {useState, useEffect} from 'react';
 import {CustomText, PriorityButton} from '../components/common';
 import CustomInput from './common/CustomInput';
 import SelectPriorityButton from './common/SelectPriorityButton';
 import ImagePicker from 'react-native-image-crop-picker';
 import axios from 'axios';
 import {CREATE_TICKET_API} from '../extras/APIS';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
-export default function CreateRequestScreen() {
-  const [prioritySelected, setPrioritySelected] = useState('Low');
-  const [title, setTitle] = useState('Fix this AC');
-  const [description, setDescription] = useState('AC is overheating');
-  const [assetName, setAssetName] = useState("AC");
-  const [location, setLocation] = useState("Somaiya");
+export default function CreateRequestScreen({navigation}) {
+  const [prioritySelected, setPrioritySelected] = useState('Medium');
+  const [title, setTitle] = useState('');
+  const [description, setDescription] = useState('');
+  const [assetName, setAssetName] = useState('');
+  const [location, setLocation] = useState('');
   const [image, setImage] = useState(null);
+  const [accessToken, setAccessToken] = useState();
+  const [postFilled, setPostFilled] = useState(false);
 
-  const accessToken = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6InVzZXIxIiwicm9sZSI6InJlcXVlc3RlZSIsImludGVyZmFjZSI6e30sImlhdCI6MTY2MDEyNDMxMCwiZXhwIjoxNjY0OTI0MzEwfQ.hC0VJUzOWeC9B0IxbBgBzNAK4Oy-5vm-DgsBl3hXo94"
+  useEffect(() => {
+    if (accessToken === undefined) {
+      getAccessToken();
+    }
+    allFieldsFilled();
+  }, [title, description, assetName, location]);
+
+  const getAccessToken = async () => {
+    try {
+      const access_token = await AsyncStorage.getItem('token');
+      setAccessToken(access_token);
+    } catch (error) {
+      console.log(error);
+    }
+  };
 
   const thisPriority = p => {
     return p == prioritySelected;
@@ -38,25 +55,31 @@ export default function CreateRequestScreen() {
     });
   };
 
+  const allFieldsFilled = () => {
+    if (title != '' && description != '' && location != '' && assetName != '') {
+      setPostFilled(true);
+    } else {
+      setPostFilled(false);
+    }
+  };
+
   const submitTicket = () => {
     console.log(title, description);
     const params = JSON.stringify({
       subject: title,
       description: description,
-      // asset_name: assetName,
-      // location: location,
     });
     axios
       .post(CREATE_TICKET_API, params, {
         headers: {
           'content-type': 'application/json',
-          "access-token": `${accessToken}`,
+          'access-token': `${accessToken}`,
         },
       })
       .then(function (response) {
         console.log(response.data);
-        console.log("done");
-        // navigation.navigate('MainApp');
+        console.log('done');
+        navigation.goBack();
       })
 
       .catch(function (error) {
@@ -65,118 +88,182 @@ export default function CreateRequestScreen() {
       });
   };
 
-  return (
-    <ScrollView>
+  const HEADER = ({navigation}) => {
+    return (
       <View
         style={{
-          width: '100%',
-          backgroundColor: '#eeeeee',
-          padding: 15,
+          flexDirection: 'row',
+          alignItems: 'center',
+          justifyContent: 'space-between',
+          backgroundColor: '#ffffff',
+          paddingVertical: 13,
+          paddingHorizontal: 10,
+          elevation: 3,
+          borderBottomColor: '#cccccc',
+          borderBottomWidth: 1,
         }}>
-        <CustomText
-          text={'Details'}
-          textSize={16}
-          textWeight={600}
-          textColor="#bd4d49"
-        />
-      </View>
-      <View>
-        <View style={{backgroundColor: 'white', padding: 10, marginBottom: 15}}>
-          <TextInput style={styles.textInput} placeholder="Title" />
-          <TextInput
-            multiline
-            style={styles.textInput}
-            placeholder="Description"
-          />
-          <View
+        <TouchableOpacity onPress={() => navigation.goBack()}>
+          <Image
+            source={require('../assets/icons/close.png')}
             style={{
-              flexDirection: 'row',
-              justifyContent: 'space-between',
-              alignItems: 'center',
-              padding: 10,
-            }}>
-            <CustomText text="Priority" textSize={15} textWeight={600} />
+              height: 25,
+              width: 25,
+              tintColor: '#000000',
+            }}
+          />
+        </TouchableOpacity>
+        <TouchableOpacity activeOpacity={1} onPress={() => console.log()}>
+          <CustomText
+            text="Create Request"
+            textWeight={600}
+            textSize={19}
+            textColor="black"
+          />
+        </TouchableOpacity>
+
+        <TouchableOpacity disabled={!postFilled} onPress={() => submitTicket()}>
+          <Image
+            source={require('../assets/icons/tick.png')}
+            style={{
+              height: 25,
+              width: 25,
+              tintColor: postFilled ? 'blue' : '#cccccc',
+            }}
+          />
+        </TouchableOpacity>
+      </View>
+    );
+  };
+
+  return (
+    <>
+      <HEADER navigation={navigation} />
+      <ScrollView>
+        <View
+          style={{
+            width: '100%',
+            backgroundColor: '#eeeeee',
+            padding: 15,
+          }}>
+          <CustomText
+            text={'Details'}
+            textSize={16}
+            textWeight={600}
+            textColor="#bd4d49"
+          />
+        </View>
+        <View>
+          <View
+            style={{backgroundColor: 'white', padding: 10, marginBottom: 15}}>
+            <TextInput
+              style={styles.textInput}
+              onChangeText={value => setTitle(value)}
+              placeholder="Title"
+            />
+            <TextInput
+              multiline
+              style={styles.textInput}
+              placeholder="Description"
+              onChangeText={value => setDescription(value)}
+            />
             <View
               style={{
                 flexDirection: 'row',
-                justifyContent: 'flex-start',
+                justifyContent: 'space-between',
                 alignItems: 'center',
+                padding: 10,
               }}>
-              <SelectPriorityButton
-                onPress={() => setPrioritySelected('Low')}
-                priority={'Low'}
-                selected={thisPriority('Low')}
-              />
-              <SelectPriorityButton
-                onPress={() => setPrioritySelected('Medium')}
-                priority={'Medium'}
-                selected={thisPriority('Medium')}
-              />
-              <SelectPriorityButton
-                onPress={() => setPrioritySelected('High')}
-                priority={'High'}
-                selected={thisPriority('High')}
-              />
+              <CustomText text="Priority" textSize={15} textWeight={600} />
+              <View
+                style={{
+                  flexDirection: 'row',
+                  justifyContent: 'flex-start',
+                  alignItems: 'center',
+                }}>
+                <SelectPriorityButton
+                  onPress={() => setPrioritySelected('Low')}
+                  priority={'Low'}
+                  selected={thisPriority('Low')}
+                />
+                <SelectPriorityButton
+                  onPress={() => setPrioritySelected('Medium')}
+                  priority={'Medium'}
+                  selected={thisPriority('Medium')}
+                />
+                <SelectPriorityButton
+                  onPress={() => setPrioritySelected('High')}
+                  priority={'High'}
+                  selected={thisPriority('High')}
+                />
+              </View>
             </View>
           </View>
-        </View>
-        <View style={{backgroundColor: 'white', padding: 10, marginBottom: 15}}>
-          <TextInput style={styles.textInput} placeholder="Asset" />
-          <TextInput style={styles.textInput} placeholder="Category" />
-          <TextInput style={styles.textInput} placeholder="Location " />
-        </View>
-
-        <View style={{backgroundColor: 'white', padding: 10, marginBottom: 15}}>
           <View
-            style={{
-              flexDirection: 'row',
-              alignItems: 'center',
-              padding: 5,
-              justifyContent: 'space-between',
-            }}>
-            <CustomText text={'Image'} textSize={15} textWeight={600} />
-            <View style={{flexDirection: 'row'}}>
-              <TouchableOpacity onPress={() => takePhotoFromCamera()}>
+            style={{backgroundColor: 'white', padding: 10, marginBottom: 15}}>
+            <TextInput
+              style={styles.textInput}
+              placeholder="Asset"
+              onChangeText={value => setAssetName(value)}
+            />
+            <TextInput style={styles.textInput} placeholder="Category" />
+            <TextInput
+              style={styles.textInput}
+              placeholder="Location"
+              onChangeText={value => setLocation(value)}
+            />
+          </View>
+          
+
+          <View
+            style={{backgroundColor: 'white', padding: 10, marginBottom: 15}}>
+            <View
+              style={{
+                flexDirection: 'row',
+                alignItems: 'center',
+                padding: 5,
+                justifyContent: 'space-between',
+              }}>
+              <CustomText text={'Image'} textSize={15} textWeight={600} />
+              <View style={{flexDirection: 'row'}}>
+                <TouchableOpacity onPress={() => takePhotoFromCamera()}>
+                  <Image
+                    style={{height: 25, width: 25, marginRight: 10}}
+                    source={require('../assets/icons/camera.png')}
+                  />
+                </TouchableOpacity>
+                <TouchableOpacity onPress={() => console.log(image)}>
+                  <Image
+                    style={{height: 25, width: 25}}
+                    source={require('../assets/icons/library.png')}
+                  />
+                </TouchableOpacity>
+              </View>
+            </View>
+          </View>
+          {image ? (
+            <View style={{marginBottom: 10, marginLeft: 10}}>
+              <Image
+                style={{height: 150, width: 150}}
+                source={{uri: image}}></Image>
+              <TouchableOpacity
+                style={{
+                  position: 'absolute',
+                  left: 120,
+                  top: 10,
+                  backgroundColor: '#ffffff80',
+                  borderRadius: 150 / 2,
+                }}
+                onPress={() => setImage(null)}>
                 <Image
-                  style={{height: 25, width: 25, marginRight: 10}}
-                  source={require('../assets/icons/camera.png')}
-                />
-              </TouchableOpacity>
-              <TouchableOpacity onPress={() => console.log(image)}>
-                <Image
-                  style={{height: 25, width: 25}}
-                  source={require('../assets/icons/library.png')}
+                  style={{height: 20, width: 20}}
+                  source={require('../assets/icons/close.png')}
                 />
               </TouchableOpacity>
             </View>
-          </View>
+          ) : null}
         </View>
-        {image ? (
-          <View style={{marginBottom: 10, marginLeft: 10}}>
-            <Image
-              style={{height: 150, width: 150}}
-              source={{uri: image}}></Image>
-            <TouchableOpacity
-              style={{
-                position: 'absolute',
-                left: 120,
-                top: 10,
-                backgroundColor: '#ffffff80',
-                borderRadius: 150 / 2,
-              }}
-              onPress={() => setImage(null)}>
-              <Image
-                style={{height: 20, width: 20}}
-                source={require('../assets/icons/close.png')}
-              />
-            </TouchableOpacity>
-          </View>
-        ) : null}
-      </View>
-      <TouchableOpacity style={{}} onPress={() => submitTicket()}>
-        <CustomText text="Post" />
-      </TouchableOpacity>
-    </ScrollView>
+      </ScrollView>
+    </>
   );
 }
 
