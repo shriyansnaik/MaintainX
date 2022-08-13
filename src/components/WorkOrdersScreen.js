@@ -1,4 +1,5 @@
 import React, {useState, useEffect} from 'react';
+import axios from 'axios';
 import {
   View,
   StyleSheet,
@@ -8,69 +9,65 @@ import {
   ScrollView,
   FlatList,
 } from 'react-native';
+import {WORK_ORDERS_API} from '../extras/APIS';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 import {CustomText, FilterButtonSmall, WorkOrderCard} from './common';
 
 const WorkOrdersScreen = ({navigation}) => {
   const [searchQuery, setSearchQuery] = useState('');
+  const [DATA, setDATA] = useState([]);
 
-  const DATA = [
-    {
-      title: 'Laptop not working',
-      location: 'Building 2, 3rd floor, Desk 4',
-      asset: 'Dell Laptop',
-      priority: 'Low',
-      status: 'open',
+  // const accessToken = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6InVzZXIxIiwicm9sZSI6InJlcXVlc3RlZSIsImludGVyZmFjZSI6e30sImlhdCI6MTY2MDEyNDMxMCwiZXhwIjoxNjY0OTI0MzEwfQ.hC0VJUzOWeC9B0IxbBgBzNAK4Oy-5vm-DgsBl3hXo94"
+
+  useEffect(() => {
+    getData('token');
+  }, [])
+  const getData = async (key) => {
+    try {
+      const data = await AsyncStorage.getItem(key);
+      if (data !== null) {
+        console.log(data);
+        getRequests(data);
+        return data;
+      }
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  // const DATA = [
+  //   {
+  //     title: 'Laptop not working',
+  //     location: 'Building 2, 3rd floor, Desk 4',
+  //     asset: 'Dell Laptop',
+  //     priority: 'Low',
+  //     status: 'open',
+  //   },
+  //   {
+  //     title: 'AC not working',
+  //     location: 'Ground floor Lobby',
+  //     asset: 'AC',
+  //     priority: 'Medium',
+  //     status: 'In-progress',
+  //   },
+  // ];
+
+const getRequests = (tokenn) => {
+  axios
+  .get(WORK_ORDERS_API , {
+    headers: {
+      "access-token": tokenn,
     },
-    {
-      title: 'Printer overheating',
-      location: 'Main Office',
-      asset: 'HP Printer',
-      priority: 'High',
-      status: 'closed',
-    },
-    {
-      title: 'AC not working',
-      location: 'Ground floor Lobby',
-      asset: 'AC',
-      priority: 'Medium',
-      status: 'In-progress',
-    },
-    {
-      title: 'AC not working',
-      location: 'Ground floor Lobby',
-      asset: 'AC',
-      priority: 'Medium',
-      status: 'In-progress',
-    },
-    {
-      title: 'AC not working',
-      location: 'Ground floor Lobby',
-      asset: 'AC',
-      priority: 'Medium',
-      status: 'In-progress',
-    },
-    {
-      title: 'AC not working',
-      location: 'Ground floor Lobby',
-      asset: 'AC',
-      priority: 'Medium',
-      status: 'In-progress',
-    },
-    {
-      title: 'AC not working',
-      location: 'Ground floor Lobby',
-      asset: 'AC',
-      priority: 'Medium',
-      status: 'In-progress',
-    },
-    {
-      title: 'AC not working',
-      location: 'Ground floor Lobby',
-      asset: 'AC',
-      priority: 'Medium',
-      status: 'In-progress',
-    },
-  ];
+  })
+  .then(function (response) {
+    console.log(response.data);
+    setDATA(response.data);
+  })
+  .catch(function (error) {
+    console.log(error, 'Work Orders Screen');
+  });
+}
+
   return (
     <>
       <View style={{backgroundColor: '#ffffff', elevation: 5}}>

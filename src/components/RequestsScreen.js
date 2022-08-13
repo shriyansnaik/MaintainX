@@ -1,3 +1,4 @@
+import axios from 'axios';
 import React, {useState, useEffect} from 'react';
 import {
   View,
@@ -8,33 +9,71 @@ import {
   ScrollView,
   FlatList,
 } from 'react-native';
+import {REQUESTS_API} from '../extras/APIS';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 import {CustomText, FilterButtonSmall, WorkOrderCard} from './common';
 
 export default function RequestsScreen({navigation}) {
   const [searchQuery, setSearchQuery] = useState('');
-  const DATA = [
-    {
-      title: '3D printer not working',
-      location: 'Building 2, 3rd floor, Desk 4',
-      asset: '3D Printer',
-      priority: 'Low',
-      status: 'open',
-    },
-    {
-      title: 'Projector not functioning',
-      location: 'Main Office',
-      asset: 'LG Projector',
-      priority: 'High',
-      status: 'open',
-    },
-    {
-      title: 'AC not working',
-      location: 'Ground floor Lobby',
-      asset: 'AC',
-      priority: 'Medium',
-      status: 'open',
-    },
-  ];
+  const [DATA, setDATA] = useState([]);
+
+  useEffect(() => {
+    getData('token');
+  }, [])
+  const getData = async (key) => {
+    try {
+      const data = await AsyncStorage.getItem(key);
+      if (data !== null) {
+        getRequests(data);
+        // console.log(data);
+        return data;
+      }
+    } catch (error) {
+      console.log(error);
+    }
+  };
+  
+  // const DATA = [
+  //   {
+  //     title: '3D printer not working',
+  //     location: 'Building 2, 3rd floor, Desk 4',
+  //     asset: '3D Printer',
+  //     priority: 'Low',
+  //     status: 'open',
+  //   },
+  //   {
+  //     title: 'Projector not functioning',
+  //     location: 'Main Office',
+  //     asset: 'LG Projector',
+  //     priority: 'High',
+  //     status: 'open',
+  //   },
+  //   {
+  //     title: 'AC not working',
+  //     location: 'Ground floor Lobby',
+  //     asset: 'AC',
+  //     priority: 'Medium',
+  //     status: 'open',
+  //   },
+  // ];
+
+
+
+  const getRequests = (tokenn) => {
+    axios
+    .get(REQUESTS_API , {
+      headers: {
+        "access-token": tokenn,
+      },
+    })
+    .then(function (response) {
+      // console.log(response.data);
+      setDATA(response.data);
+    })
+    .catch(function (error) {
+      console.log(error, 'Request Screen');
+    });
+  }
   return (
     <>
       <View style={{backgroundColor: '#ffffff', elevation: 5}}>
@@ -44,7 +83,7 @@ export default function RequestsScreen({navigation}) {
             padding: 15,
           }}>
           <CustomText
-            text="Work Orders"
+            text="Requests"
             textColor={'black'}
             textSize={18}
             textWeight={700}
@@ -101,21 +140,21 @@ export default function RequestsScreen({navigation}) {
         </View>
       </View>
       <FlatList
-        data={DATA}
+        data={DATA.tickets}
         renderItem={({item}) => (
           <>
-            {item.title.toLowerCase().includes(searchQuery.toLowerCase(), 0) ? (
+            {item.subject.toLowerCase().includes(searchQuery.toLowerCase(), 0) ? (
               <WorkOrderCard
                 style={{marginTop: 10}}
-                title={item.title}
-                location={item.location}
-                asset={item.asset}
-                priority={item.priority}
+                title={item.subject}
+                location={item.company}
+                asset={item.subject}
+                priority={'Medium'}
                 status={item.status}
                 onCardPress={() =>
                   navigation.navigate('Request Details', {
-                    title: item.title,
-                    location: item.location,
+                    title: item.subject,
+                    location: item.company,
                     asset: item.asset,
                     priority: item.priority,
                     status: item.status,
@@ -123,6 +162,7 @@ export default function RequestsScreen({navigation}) {
                 }
               />
             ) : null}
+
           </>
         )}
       />

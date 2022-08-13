@@ -13,6 +13,7 @@ import CustomButton from './common//CustomButton';
 import {useNavigation} from '@react-navigation/native';
 import axios from 'axios';
 import {LOGIN_SCREEN_API} from '../extras/APIS';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 const login = (username, password, navigation) => {
   const params = JSON.stringify({
@@ -26,7 +27,8 @@ const login = (username, password, navigation) => {
       },
     })
     .then(function (response) {
-      console.log(response.data);
+      // console.log(response.data);
+      storeData(response.data);
       navigation.navigate('MainApp');
     })
 
@@ -35,17 +37,14 @@ const login = (username, password, navigation) => {
       alert('Oops! Wrong Password or Username!');
     });
 
-  // axios
-  //   .post('http://localhost:3000/login', {
-  //     username: username,
-  //     password: password,
-  //   })
-  //   .then(function (response) {
-  //     console.log(response);
-  //   })
-  //   .catch(function (error) {
-  //     console.log(error);
-  //   });
+  const storeData = async value => {
+    try {
+      await AsyncStorage.setItem('token', value.access_token);
+      await AsyncStorage.setItem('role', value.role);
+    } catch (err) {
+      console.log(err);
+    }
+  };
 
   // const body = JSON.stringify({username, password});
 
@@ -74,8 +73,8 @@ const LoginScreen = props => {
   const {} = props;
   const {} = styles;
 
-  const [username, setUsername] = useState('');
-  const [password, setPassword] = useState('');
+  const [username, setUsername] = useState('user1');
+  const [password, setPassword] = useState('1234');
 
   const {height} = useWindowDimensions();
   const navigation = useNavigation();
@@ -118,8 +117,10 @@ const LoginScreen = props => {
 
         <CustomButton
           text="Log In"
-          // onPress={() => login(username, password, navigation)}
-          onPress={() => navigation.navigate('MainApp')}
+          onPress={() =>
+            login(username, password, navigation)
+          }
+          // onPress={() => navigation.navigate('MainApp')}
         />
 
         <CustomButton

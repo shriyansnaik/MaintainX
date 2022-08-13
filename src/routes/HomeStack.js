@@ -3,6 +3,7 @@ import {createNativeStackNavigator} from '@react-navigation/native-stack';
 import HomeScreen from '../components/HomeScreen';
 import SettingScreen from '../components/SettingScreen';
 import {Image, TouchableOpacity, View} from 'react-native';
+import CreateRequestScreen from '../components/CreateRequestScreen';
 const HomeStackNav = createNativeStackNavigator();
 
 const HomeStack = ({navigation}) => {
@@ -15,7 +16,7 @@ const HomeStack = ({navigation}) => {
           headerLeft: () => (
             <Image
               source={require('../assets/icons/company_logo1.png')}
-              style={{marginLeft:5}}
+              style={{marginLeft: 5}}
             />
           ),
 
@@ -49,6 +50,12 @@ const HomeStack = ({navigation}) => {
         }}
       />
       <HomeStackNav.Screen name="SettingsScreen" component={SettingScreen} />
+      <HomeStackNav.Screen
+        name="Create Request"
+        component={CreateRequestScreen}
+        options={{headerShown: false}}
+        
+      />
     </HomeStackNav.Navigator>
   );
 };

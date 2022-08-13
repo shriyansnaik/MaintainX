@@ -1,5 +1,6 @@
 import * as React from 'react';
-import {Image} from 'react-native';
+import {useEffect, useState, useContext} from 'react';
+import {Image, TouchableOpacity, View} from 'react-native';
 import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
 import SettingScreen from '../components/SettingScreen';
 import WorkOrdersScreen from '../components/WorkOrdersScreen';
@@ -9,10 +10,28 @@ import WorkOrderStack from './WorkOrderStack';
 import CreateRequestScreen from '../components/CreateRequestScreen';
 import RequestsScreen from '../components/RequestsScreen';
 import RequestStack from './RequestStack';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import {GlobalStateContext} from '../routes/GlobalStateProvider';
 
 const TabStackNav = createBottomTabNavigator();
 
 const TabStack = route => {
+  const [role, setRole] = useState();
+  const {modalVisible, setModalVisible} = useContext(GlobalStateContext);
+  const OptionsModal = () => null;
+  useEffect(() => {
+    getrole();
+    console.log(role);
+  }, []);
+
+  const getrole = async () => {
+    try {
+      const role = await AsyncStorage.getItem('role');
+      setRole(role);
+    } catch (error) {
+      console.log(error);
+    }
+  };
   return (
     <TabStackNav.Navigator
       screenOptions={{
@@ -60,11 +79,12 @@ const TabStack = route => {
         }}
       />
 
-      <TabStackNav.Screen
+      {/* <TabStackNav.Screen
         name="Create Request"
         component={CreateRequestScreen}
         options={{
-          headerShadowVisible: false,
+          headerShown: false,
+
           tabBarIcon: ({focused}) => (
             <Image
               source={require('../assets/icons/plus.png')}
@@ -76,6 +96,28 @@ const TabStack = route => {
             />
           ),
         }}
+      /> */}
+      <TabStackNav.Screen
+        name="Create Request Options"
+        component={OptionsModal}
+        options={() => ({
+          tabBarIcon: ({focused}) => (
+            <Image
+              source={require('../assets/icons/plus.png')}
+              style={{
+                height: 25,
+                width: 25,
+                tintColor: focused ? '#ffffff' : '#8c8c8c',
+              }}
+            />
+          ),
+          tabBarButton: props => (
+            <TouchableOpacity
+              {...props}
+              onPress={() => setModalVisible(!modalVisible)}
+            />
+          ),
+        })}
       />
       <TabStackNav.Screen
         name="Requests Stack"
