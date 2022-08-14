@@ -1,6 +1,7 @@
 import {View, Text, StyleSheet, Image, TouchableOpacity} from 'react-native';
 import React from 'react';
 import { PriorityButton } from './common';
+import { Button } from 'react-native-paper';
 
 
 export default function RequestDetails({route}) {
@@ -58,8 +59,11 @@ export default function RequestDetails({route}) {
         </View>
       </View>
       <View>
-        <TouchableOpacity style={styles.buttonStyle}>
-          <Text style={{fontSize:15,fontWeight:'bold',color:'white'}}>Accept</Text>
+        <TouchableOpacity 
+        onPress={pushData()}
+        style={styles.buttonStyle}>
+          <Text 
+          style={{fontSize:15,fontWeight:'bold',color:'white'}}>Accept</Text>
         </TouchableOpacity>
       </View>
     </View>
@@ -93,12 +97,12 @@ const styles = StyleSheet.create({
     justifyContent:'center',
     alignItems:'center',
     marginTop:5,
-    
-
-
-
-
-
-
   }
 });
+
+
+// true or false login
+// Backhandler
+// work orders get api
+// reverse data 
+// accept ticket(put method)
