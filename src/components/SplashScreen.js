@@ -3,6 +3,7 @@ import {View, Image, useWindowDimensions, TouchableOpacity} from 'react-native';
 import Homescreen from './HomeScreen';
 import LoginScreen from './LoginScreen';
 import TabStack from '../routes/TabStack';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 const SplashScreen = props => {
   const {height} = useWindowDimensions();
@@ -15,6 +16,7 @@ const SplashScreen = props => {
     trial();
     setTimeout(() => {
       const store = getData('role');
+      console.log(store);
       setTimePassed(true);
     }, 2000);
   }, []);
@@ -23,7 +25,7 @@ const SplashScreen = props => {
     const token = getData('token');
     if(token === undefined) {
       setToken(false);
-    } else{
+    } else {
       setToken(true);
     }
     
@@ -32,8 +34,7 @@ const SplashScreen = props => {
     try {
       const data = await AsyncStorage.getItem(key);
       if (data !== null) {
-        getRequests(data);
-        // console.log(data);
+        console.log('splash screen',data);
         return data;
       }
     } catch (error) {
