@@ -17,11 +17,12 @@ const TabStackNav = createBottomTabNavigator();
 
 const TabStack = route => {
   const [role, setRole] = useState();
-  const {modalVisible, setModalVisible} = useContext(GlobalStateContext);
+  const {modalVisible, setModalVisible, accessToken, roleOfUser} = useContext(GlobalStateContext);
   const OptionsModal = () => null;
   useEffect(() => {
     getrole('role');
-    console.log('tab stack mai role ka value aa gaya: ',role);
+    // console.log('tab stack mai role ka value aa gaya: ',role);
+    console.log('tab stack mai role ka value aa gaya: ',roleOfUser);
   }, []);
 
   const getrole = async (key) => {

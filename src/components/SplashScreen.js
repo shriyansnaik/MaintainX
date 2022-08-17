@@ -1,9 +1,10 @@
-import React, {useState, useEffect} from 'react';
+import React, {useState, useEffect, useContext} from 'react';
 import {View, Image, useWindowDimensions, TouchableOpacity} from 'react-native';
 import Homescreen from './HomeScreen';
 import LoginScreen from './LoginScreen';
 import TabStack from '../routes/TabStack';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import {GlobalStateContext} from '../routes/GlobalStateProvider';
 
 const SplashScreen = props => {
   const {height} = useWindowDimensions();
@@ -11,12 +12,14 @@ const SplashScreen = props => {
   const {navigation} = props;
   const [timePassed, setTimePassed] = useState(false);
   const [token, setToken] = useState(false);
+  const {setAccessToken, setRoleOfUser} = useContext(GlobalStateContext)
 
   useEffect(() => {
     trial();
     setTimeout(() => {
       const store = getData('role');
-      console.log(store);
+      console.log("Inside settimeout splash screen",store);
+      setRoleOfUser(store)
       setTimePassed(true);
     }, 2000);
   }, []);
@@ -34,7 +37,8 @@ const SplashScreen = props => {
     try {
       const data = await AsyncStorage.getItem(key);
       if (data !== null) {
-        console.log('splash screen',data);
+        console.log('splash screen =>',data);
+        setAccessToken(data)
         return data;
       }
     } catch (error) {
