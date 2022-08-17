@@ -19,9 +19,10 @@ const TabStack = route => {
   const [role, setRole] = useState();
   const {modalVisible, setModalVisible} = useContext(GlobalStateContext);
   const OptionsModal = () => null;
+
   useEffect(() => {
     getrole('role');
-    console.log('tab stack mai role ka value aa gaya: ',role);
+    
   }, []);
 
   const getrole = async (key) => {
@@ -29,6 +30,7 @@ const TabStack = route => {
       const data = await AsyncStorage.getItem(key);
       if (data !== null) {
         setRole(data);
+        console.log('tab stack mai role ka value aa gaya: ',role);
         // console.log(data,'tab')
         return data;
       }

@@ -1,23 +1,49 @@
 import {View, Text, StyleSheet, Image, TouchableOpacity} from 'react-native';
 import React from 'react';
-import { PriorityButton } from './common';
-import { Button } from 'react-native-paper';
+import {PriorityButton} from './common';
+import {Button} from 'react-native-paper';
 import {ACCEPT_TICKET_API} from '../extras/APIS';
-
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 export default function RequestDetails({route}) {
-
   const [post, setPost] = useState(null);
 
-  const pushData = () => {
-    axios
-      .put(ACCEPT_TICKET_API, {
-        accepted: true,
-      })
-      .then((response) => {
-        setPost(response.data);
+  useEffect(() => {
+    getData('token');
+  }, [])
+  const getData = async (key) => {
+    try {
+      const data = await AsyncStorage.getItem(key);
+      if (data !== null) {
+        pushData(data);
+        // console.log(data);
+        return data;
+      }
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  const pushData = (tokenn) => {
+      const params = JSON.stringify({
+        status: 'closed',
       });
-  }
+    axios
+      .put(ACCEPT_TICKET_API, params, {
+        headers: {
+          'content-type': 'application/json',
+          'access-token': tokenn,
+        },
+      })
+      .then(function (response) {
+        console.log(response.data);
+        console.log('done');
+      })
+
+      .catch(function (error) {
+        console.log(error, 'Axios error (request details screen)');
+      });
+  };
   return (
     <View style={{flex: 1}}>
       <View style={{height: 400, backgroundColor: 'white'}}>
@@ -31,7 +57,7 @@ export default function RequestDetails({route}) {
           }}>
           {route.params.priority}
         </Text> */}
-        <PriorityButton priorityText = {route.params.priority} />
+        <PriorityButton priorityText={route.params.priority} />
 
         <Image
           style={{
@@ -50,19 +76,19 @@ export default function RequestDetails({route}) {
               style={{
                 fontSize: 15,
                 color: 'black',
-}}>
+              }}>
               {route.params.title}
             </Text>
-            <View style={{flexDirection: 'row',marginTop:10,}}>
+            <View style={{flexDirection: 'row', marginTop: 10}}>
               <Image
-                style={{height: 20, width: 20 ,}}
+                style={{height: 20, width: 20}}
                 source={require('../assets/icons/location.png')}
               />
               <Text
                 style={{
                   fontSize: 15,
                   color: 'black',
-                  
+
                   marginLeft: 10,
                 }}>
                 {route.params.location}
@@ -72,11 +98,10 @@ export default function RequestDetails({route}) {
         </View>
       </View>
       <View>
-        <TouchableOpacity 
-        onPress={pushData()}
-        style={styles.buttonStyle}>
-          <Text 
-          style={{fontSize:15,fontWeight:'bold',color:'white'}}>Accept</Text>
+        <TouchableOpacity onPress={pushData()} style={styles.buttonStyle}>
+          <Text style={{fontSize: 15, fontWeight: 'bold', color: 'white'}}>
+            Accept
+          </Text>
         </TouchableOpacity>
       </View>
     </View>
@@ -100,15 +125,15 @@ const styles = StyleSheet.create({
     borderRadius: 15,
     justifyContent: 'center',
   },
-  buttonStyle:{
-    height:45,
+  buttonStyle: {
+    height: 45,
     backgroundColor: '#C13F3F',
     elevation: 20,
-    width:110,
-    marginLeft:225,
-    borderRadius:15,
-    justifyContent:'center',
-    alignItems:'center',
-    marginTop:5,
-  }
+    width: 110,
+    marginLeft: 225,
+    borderRadius: 15,
+    justifyContent: 'center',
+    alignItems: 'center',
+    marginTop: 5,
+  },
 });

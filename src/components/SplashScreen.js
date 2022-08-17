@@ -15,14 +15,14 @@ const SplashScreen = props => {
   useEffect(() => {
     trial();
     setTimeout(() => {
-      const store = getData('role');
+      const store = getRole('role');
       console.log(store);
       setTimePassed(true);
     }, 2000);
   }, []);
 
   const trial = () => {
-    const token = getData('token');
+    const token = getToken('token');
     if(token === undefined) {
       setToken(false);
     } else {
@@ -30,7 +30,19 @@ const SplashScreen = props => {
     }
     
   }
-  const getData = async (key) => {
+  const getToken = async (key) => {
+    try {
+      const data = await AsyncStorage.getItem(key);
+      if (data !== null) {
+        console.log('splash screen',data);
+        return data;
+      }
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  const getRole = async (key) => {
     try {
       const data = await AsyncStorage.getItem(key);
       if (data !== null) {
