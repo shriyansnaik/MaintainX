@@ -20,18 +20,23 @@ const TabStack = route => {
   const {modalVisible, setModalVisible} = useContext(GlobalStateContext);
   const OptionsModal = () => null;
   useEffect(() => {
-    getrole();
+    setRole(getrole('role'));
     console.log(role);
   }, []);
 
-  const getrole = async () => {
+  const getrole = async (key) => {
     try {
-      const role = await AsyncStorage.getItem('role');
-      setRole(role);
+      const data = await AsyncStorage.getItem(key);
+      if (data !== null) {
+        
+        console.log('splash screen',data);
+        return data;
+      }
     } catch (error) {
       console.log(error);
     }
   };
+
   return (
     <TabStackNav.Navigator
       screenOptions={{
