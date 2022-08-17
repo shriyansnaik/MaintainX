@@ -2,9 +2,22 @@ import {View, Text, StyleSheet, Image, TouchableOpacity} from 'react-native';
 import React from 'react';
 import { PriorityButton } from './common';
 import { Button } from 'react-native-paper';
+import {ACCEPT_TICKET_API} from '../extras/APIS';
 
 
 export default function RequestDetails({route}) {
+
+  const [post, setPost] = useState(null);
+
+  const pushData = () => {
+    axios
+      .put(ACCEPT_TICKET_API, {
+        accepted: true,
+      })
+      .then((response) => {
+        setPost(response.data);
+      });
+  }
   return (
     <View style={{flex: 1}}>
       <View style={{height: 400, backgroundColor: 'white'}}>
@@ -100,8 +113,6 @@ const styles = StyleSheet.create({
   }
 });
 
-
-// true or false login
 // Backhandler
 // work orders get api
 // reverse data 
