@@ -112,8 +112,3 @@ const styles = StyleSheet.create({
     marginTop:5,
   }
 });
-
-// Backhandler
-// work orders get api
-// reverse data 
-// accept ticket(put method)

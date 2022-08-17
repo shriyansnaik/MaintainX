@@ -20,16 +20,16 @@ const TabStack = route => {
   const {modalVisible, setModalVisible} = useContext(GlobalStateContext);
   const OptionsModal = () => null;
   useEffect(() => {
-    setRole(getrole('role'));
-    console.log(role);
+    getrole('role');
+    console.log('tab stack mai role ka value aa gaya: ',role);
   }, []);
 
   const getrole = async (key) => {
     try {
       const data = await AsyncStorage.getItem(key);
       if (data !== null) {
-        
-        console.log('splash screen',data);
+        setRole(data);
+        // console.log(data,'tab')
         return data;
       }
     } catch (error) {
