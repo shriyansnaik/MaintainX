@@ -7,14 +7,25 @@ import {
   TouchableOpacity,
   Dimensions,
   Modal,
+  BackHandler
 } from 'react-native';
-import React, {useContext} from 'react';
+import React, {useContext, useEffect} from 'react';
 import {CustomText} from './common';
 import FilterItemButton from './common/FilterItemButton';
 import {GlobalStateContext} from '../routes/GlobalStateProvider';
 
 const {width} = Dimensions.get('screen');
 const Homescreen = ({navigation}) => {
+  function handleBackButtonClick() {
+    BackHandler.exitApp()
+  }
+
+  useEffect(() => {
+    BackHandler.addEventListener("hardwareBackPress", handleBackButtonClick);
+    return () => {
+      BackHandler.removeEventListener("hardwareBackPress", handleBackButtonClick);
+    };
+  }, []);
   const {modalVisible, setModalVisible} = useContext(GlobalStateContext);
   const CreateScreenModal = () => {
     return (

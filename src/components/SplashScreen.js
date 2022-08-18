@@ -12,33 +12,36 @@ const SplashScreen = props => {
   const {navigation} = props;
   const [timePassed, setTimePassed] = useState(false);
   const [token, setToken] = useState(false);
-  const {setAccessToken, setRoleOfUser} = useContext(GlobalStateContext)
+  const {setAccessToken, setRoleOfUser, roleOfUser, accessToken} =
+    useContext(GlobalStateContext);
 
   useEffect(() => {
-    trial();
+    getRole('role');
+    getToken('token');
     setTimeout(() => {
-      const store = getData('role');
-      console.log("Inside settimeout splash screen",store);
-      setRoleOfUser(store)
       setTimePassed(true);
     }, 2000);
   }, []);
 
-  const trial = () => {
-    const token = getData('token');
-    if(token === undefined) {
-      setToken(false);
-    } else {
-      setToken(true);
-    }
-    
-  }
-  const getData = async (key) => {
+  const getToken = async key => {
     try {
       const data = await AsyncStorage.getItem(key);
       if (data !== null) {
-        console.log('splash screen =>',data);
-        setAccessToken(data)
+        console.log('Access token on splash screen', data);
+        setAccessToken(data);
+      }
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  const getRole = async key => {
+    try {
+      const data = await AsyncStorage.getItem(key);
+      if (data !== null) {
+        console.log('Role on splash screen =>', data);
+        setRoleOfUser(data);
+        console.log(roleOfUser);
         return data;
       }
     } catch (error) {
@@ -46,7 +49,11 @@ const SplashScreen = props => {
     }
   };
   return timePassed ? (
-    token ? <TabStack /> : <LoginScreen /> 
+    accessToken ? (
+      <TabStack />
+    ) : (
+      <LoginScreen />
+    )
   ) : (
     <View style={background}>
       <View>

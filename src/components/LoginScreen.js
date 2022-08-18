@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {useState, useEffect} from 'react';
 import {
   View,
   Text,
@@ -6,6 +6,7 @@ import {
   StyleSheet,
   useWindowDimensions,
   ScrollView,
+  BackHandler,
 } from 'react-native';
 import {CustomText} from './common';
 import CustomInput from './common/CustomInput';
@@ -46,27 +47,19 @@ const login = (username, password, navigation) => {
     }
   };
 
-  // const body = JSON.stringify({username, password});
+  function handleBackButtonClick() {
+    BackHandler.exitApp();
+  }
 
-  // try {
-  //   const res = axios.post('/http://localhost:3000/login', body);
-  //   // dispatch({
-  //   //     // type:LOGIN_SUCCESS,
-  //   //     payload:res.data
-  //   // })
-
-  //   // dispatch(loadUser());
-  //   console.log('Success', res);
-  // } catch (err) {
-  //   const errors = err.response;
-  //   if (errors) {
-  //     //  errors.forEach(error=>dispatch(setAlert(error.msg,'danger')))
-  //     console.log('Error');
-  //   }
-  //   // dispatch({
-  //   //     // type:LOGIN_FAIL
-  //   // })
-  // }
+  useEffect(() => {
+    BackHandler.addEventListener('hardwareBackPress', handleBackButtonClick);
+    return () => {
+      BackHandler.removeEventListener(
+        'hardwareBackPress',
+        handleBackButtonClick,
+      );
+    };
+  }, []);
 };
 
 const LoginScreen = props => {
@@ -117,10 +110,10 @@ const LoginScreen = props => {
 
         <CustomButton
           text="Log In"
-          onPress={() =>
-            login(username, password, navigation)
-          }
-          // onPress={() => navigation.navigate('MainApp')}
+          // onPress={() =>
+          //   login(username, password, navigation)
+          // }
+          onPress={() => navigation.navigate('MainApp')}
         />
 
         <CustomButton

@@ -69,11 +69,12 @@ export default function CreateRequestScreen({navigation}) {
       subject: title,
       description: description,
     });
+    const at = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6InJlcTEiLCJyb2xlIjoicmVxdWVzdGVlIiwiaW50ZXJmYWNlIjp7fSwiaWF0IjoxNjYwNzI5NDA1LCJleHAiOjQ4MDAwMDAwMDE2NjA3MjkwMDB9.OlH2G22Mz8Ax0HlgHYS6rO87e3JOMX2iXZV2R8EEA9g"
     axios
       .post(CREATE_TICKET_API, params, {
         headers: {
           'content-type': 'application/json',
-          'access-token': `${accessToken}`,
+          'access-token': `${at}`,
         },
       })
       .then(function (response) {

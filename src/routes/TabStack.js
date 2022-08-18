@@ -17,20 +17,21 @@ const TabStackNav = createBottomTabNavigator();
 
 const TabStack = route => {
   const [role, setRole] = useState();
-  const {modalVisible, setModalVisible, accessToken, roleOfUser} = useContext(GlobalStateContext);
+  const {modalVisible, setModalVisible, accessToken, roleOfUser} =
+    useContext(GlobalStateContext);
   const OptionsModal = () => null;
+
   useEffect(() => {
     getrole('role');
     // console.log('tab stack mai role ka value aa gaya: ',role);
-    console.log('tab stack mai role ka value aa gaya: ',roleOfUser);
+    console.log('tab stack role: ', roleOfUser);
   }, []);
 
-  const getrole = async (key) => {
+  const getrole = async key => {
     try {
       const data = await AsyncStorage.getItem(key);
       if (data !== null) {
         setRole(data);
-        // console.log(data,'tab')
         return data;
       }
     } catch (error) {
@@ -67,82 +68,71 @@ const TabStack = route => {
           // tabBarStyle: { backgroundColor: 'powderblue' }
         }}
       />
-      <TabStackNav.Screen
-        name="WorkOrderScreen"
-        component={WorkOrderStack}
-        options={{
-          tabBarIcon: ({focused}) => (
-            <Image
-              source={require('../assets/icons/workorder.png')}
-              style={{
-                height: 25,
-                width: 25,
-                tintColor: focused ? '#ffffff' : '#8c8c8c',
-              }}
-            />
-          ),
-          headerShown: false,
-        }}
-      />
+      {roleOfUser != 'requestee' ? (
+        <TabStackNav.Screen
+          name="WorkOrderScreen"
+          component={WorkOrderStack}
+          options={{
+            tabBarIcon: ({focused}) => (
+              <Image
+                source={require('../assets/icons/workorder.png')}
+                style={{
+                  height: 25,
+                  width: 25,
+                  tintColor: focused ? '#ffffff' : '#8c8c8c',
+                }}
+              />
+            ),
+            headerShown: false,
+          }}
+        />
+      ) : null}
 
-      {/* <TabStackNav.Screen
-        name="Create Request"
-        component={CreateRequestScreen}
-        options={{
-          headerShown: false,
+      {roleOfUser == 'requestee' ? (
+        <TabStackNav.Screen
+          name="Create Request Options"
+          component={OptionsModal}
+          options={() => ({
+            tabBarIcon: ({focused}) => (
+              <Image
+                source={require('../assets/icons/plus.png')}
+                style={{
+                  height: 25,
+                  width: 25,
+                  tintColor: focused ? '#ffffff' : '#8c8c8c',
+                }}
+              />
+            ),
+            tabBarButton: props => (
+              <TouchableOpacity
+                {...props}
+                onPress={() => setModalVisible(!modalVisible)}
+              />
+            ),
+          })}
+        />
+      ) : null}
 
-          tabBarIcon: ({focused}) => (
-            <Image
-              source={require('../assets/icons/plus.png')}
-              style={{
-                height: 25,
-                width: 25,
-                tintColor: focused ? '#ffffff' : '#8c8c8c',
-              }}
-            />
-          ),
-        }}
-      /> */}
-      <TabStackNav.Screen
-        name="Create Request Options"
-        component={OptionsModal}
-        options={() => ({
-          tabBarIcon: ({focused}) => (
-            <Image
-              source={require('../assets/icons/plus.png')}
-              style={{
-                height: 25,
-                width: 25,
-                tintColor: focused ? '#ffffff' : '#8c8c8c',
-              }}
-            />
-          ),
-          tabBarButton: props => (
-            <TouchableOpacity
-              {...props}
-              onPress={() => setModalVisible(!modalVisible)}
-            />
-          ),
-        })}
-      />
-      <TabStackNav.Screen
-        name="Requests Stack"
-        component={RequestStack}
-        options={{
-          headerShadowVisible: false,
-          tabBarIcon: ({focused}) => (
-            <Image
-              source={require('../assets/icons/requests.png')}
-              style={{
-                height: 25,
-                width: 25,
-                tintColor: focused ? '#ffffff' : '#8c8c8c',
-              }}
-            />
-          ),
-          headerShown: false,
-        }}
-      />
+      {roleOfUser != 'requestee' ? (
+        <TabStackNav.Screen
+          name="Requests Stack"
+          component={RequestStack}
+          options={{
+            headerShadowVisible: false,
+            tabBarIcon: ({focused}) => (
+              <Image
+                source={require('../assets/icons/requests.png')}
+                style={{
+                  height: 25,
+                  width: 25,
+                  tintColor: focused ? '#ffffff' : '#8c8c8c',
+                }}
+              />
+            ),
+            headerShown: false,
+          }}
+        />
+      ) : null}
 
       <TabStackNav.Screen
         name="Settings"
