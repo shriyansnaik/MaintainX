@@ -1,39 +1,26 @@
 import {View, Text, StyleSheet, Image, TouchableOpacity} from 'react-native';
-import React,{useState,useEffect} from 'react';
+import React, {useState, useContext} from 'react';
 import {PriorityButton} from './common';
 import {Button} from 'react-native-paper';
 import {ACCEPT_TICKET_API} from '../extras/APIS';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import axios from 'axios';
+import {GlobalStateContext} from '../routes/GlobalStateProvider';
 
 export default function RequestDetails({route}) {
   const [post, setPost] = useState(null);
+  const {accessToken} = useContext(GlobalStateContext);
 
-  useEffect(() => {
-    getData('token');
-  }, [])
-  const getData = async (key) => {
-    try {
-      const data = await AsyncStorage.getItem(key);
-      if (data !== null) {
-        pushData(data);
-        // console.log(data);
-        return data;
-      }
-    } catch (error) {
-      console.log(error);
-    }
-  };
-
-  const pushData = (tokenn) => {
-      const params = JSON.stringify({
-        status: 'closed',
-      });
+  const pushData = () => {
+    const params = JSON.stringify({
+      accepted: true,
+      _id: route.params.priority
+    });
     axios
       .put(ACCEPT_TICKET_API, params, {
         headers: {
           'content-type': 'application/json',
-          'access-token': tokenn,
+          'access-token': accessToken,
         },
       })
       .then(function (response) {

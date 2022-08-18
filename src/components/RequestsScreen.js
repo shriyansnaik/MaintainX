@@ -124,6 +124,7 @@ export default function RequestsScreen({navigation}) {
                     asset: item.asset,
                     priority: item.priority,
                     status: item.status,
+                    id: item._id
                   })
                 }
               />

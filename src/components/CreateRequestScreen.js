@@ -6,7 +6,7 @@ import {
   Image,
   ScrollView,
 } from 'react-native';
-import React, {useState, useEffect,useContext} from 'react';
+import React, {useState, useEffect, useContext} from 'react';
 import {CustomText, PriorityButton} from '../components/common';
 import CustomInput from './common/CustomInput';
 import SelectPriorityButton from './common/SelectPriorityButton';
@@ -30,6 +30,25 @@ export default function CreateRequestScreen({navigation}) {
     allFieldsFilled();
   }, [title, description, assetName, location]);
 
+  const imageUploadTest = () => {
+    const params = JSON.stringify({
+      image: image
+    })
+    axios
+      .post(CREATE_TICKET_API, params, {
+        headers: {
+          'content-type': 'application/json',
+          'access-token': `${accessToken}`,
+        },
+      })
+      .then(function (response) {
+        console.log(response.data);
+      })
+
+      .catch(function (error) {
+        console.log(error, 'Axios error (create request screen)');
+      });
+  };
 
   const thisPriority = p => {
     return p == prioritySelected;
@@ -59,7 +78,7 @@ export default function CreateRequestScreen({navigation}) {
       subject: title,
       description: description,
       asset_name: assetName,
-      location: location
+      location: location,
     });
     axios
       .post(CREATE_TICKET_API, params, {
@@ -104,7 +123,7 @@ export default function CreateRequestScreen({navigation}) {
             }}
           />
         </TouchableOpacity>
-        <TouchableOpacity activeOpacity={1} onPress={() => console.log()}>
+        <TouchableOpacity activeOpacity={1} onPress={() => console.log(image)}>
           <CustomText
             text="Create Request"
             textWeight={600}
