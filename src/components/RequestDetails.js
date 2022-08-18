@@ -1,9 +1,10 @@
 import {View, Text, StyleSheet, Image, TouchableOpacity} from 'react-native';
-import React from 'react';
+import React,{useState,useEffect} from 'react';
 import {PriorityButton} from './common';
 import {Button} from 'react-native-paper';
 import {ACCEPT_TICKET_API} from '../extras/APIS';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import axios from 'axios';
 
 export default function RequestDetails({route}) {
   const [post, setPost] = useState(null);

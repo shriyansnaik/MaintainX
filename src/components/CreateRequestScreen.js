@@ -58,6 +58,8 @@ export default function CreateRequestScreen({navigation}) {
     const params = JSON.stringify({
       subject: title,
       description: description,
+      asset_name: assetName,
+      location: location
     });
     axios
       .post(CREATE_TICKET_API, params, {
