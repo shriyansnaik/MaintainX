@@ -1,8 +1,10 @@
 import {View, Image, TouchableOpacity, Modal, Alert} from 'react-native';
 import {CustomText} from './common';
-import React, {useState} from 'react';
+import React, {useState, useContext} from 'react';
+import {GlobalStateContext} from '../routes/GlobalStateProvider';
+import axios from 'axios';
 
-export default function WorkOrderDetails() {
+export default function WorkOrderDetails({route}) {
   const [modalVisible, setModalVisible] = useState(false);
   const [currentStatus, setCurrentStatus] = useState('Open');
   const [currentStatusIcon, setCurrentStatusIcon] = useState(
@@ -14,6 +16,43 @@ export default function WorkOrderDetails() {
       setModalVisible(false),
       setCurrentStatusIcon(icon);
   };
+
+  const {accessToken} = useContext(GlobalStateContext);
+
+  const updateStatus = () => {
+    const id = route.params.id;
+    console.log(id);
+    // const body = JSON.stringify({
+    //   status: 'close',
+    // });
+    // axios
+    //   .patch(`http://192.168.1.7:3000/technician/acceptTicket/${id}`, body, {
+    //     headers: {
+    //       'content-type': 'application/json',
+    //       'access-token': accessToken,
+    //     },
+    //   })
+    //   .catch(error => console.log(error));
+
+    axios({
+      method: 'patch',
+      url: `http://192.168.1.7:3000/technician/acceptTicket/${id}`,
+      body: {
+        status: 'close',
+      },
+      headers: {
+        'content-type': 'application/json',
+        'access-token': `${accessToken}`,
+      },
+    })
+      .then(res => {
+        console.log(res.data.msg);
+      })
+      .catch(error => {
+        console.log(error);
+      });
+  };
+
   return (
     <View style={{flex: 1, backgroundColor: '#F2F2F2'}}>
       <View>
@@ -288,6 +327,7 @@ export default function WorkOrderDetails() {
               changeStatusandModal(
                 'Complete',
                 require('../assets/icons/complete.png'),
+                updateStatus(),
               )
             }
             style={{

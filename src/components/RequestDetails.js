@@ -12,25 +12,39 @@ export default function RequestDetails({route}) {
   const {accessToken} = useContext(GlobalStateContext);
 
   const pushData = () => {
+    console.log(route.params.id, 'tciket id');
+    const id = route.params.id;
     const params = JSON.stringify({
-      accepted: true,
-      _id: route.params.priority
+      ticketid: route.params.id,
     });
-    axios
-      .put(ACCEPT_TICKET_API, params, {
-        headers: {
-          'content-type': 'application/json',
-          'access-token': accessToken,
-        },
+    axios({
+      method: 'patch',
+      url: `http://192.168.1.7:3000/technician/acceptTicket/${id}`,params,
+      headers: {
+        'access-token': `${accessToken}`,
+      },
+    })
+      .then(res => {
+        console.log(res.data.msg);
       })
-      .then(function (response) {
-        console.log(response.data);
-        console.log('done');
-      })
-
-      .catch(function (error) {
-        console.log(error, 'Axios error (request details screen)');
+      .catch(error => {
+        console.log(error);
       });
+
+    // axios
+    //   .patch(`http://192.168.1.7:3000/technician/acceptTicket/${route.params.id}`,params,  {
+    //     headers: {
+    //       'access-token': accessToken,
+    //     },
+    //   })
+    //   .then(function (response) {
+    //     console.log(response.data);
+    //     console.log('done');
+    //   })
+
+    //   .catch(function (error) {
+    //     console.log(error, 'Axios error (request details screen)');
+    //   });
   };
   return (
     <View style={{flex: 1}}>
@@ -86,7 +100,7 @@ export default function RequestDetails({route}) {
         </View>
       </View>
       <View>
-        <TouchableOpacity onPress={pushData()} style={styles.buttonStyle}>
+        <TouchableOpacity onPress={() => pushData()} style={styles.buttonStyle}>
           <Text style={{fontSize: 15, fontWeight: 'bold', color: 'white'}}>
             Accept
           </Text>
