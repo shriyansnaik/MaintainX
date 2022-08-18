@@ -1,5 +1,5 @@
 import axios from 'axios';
-import React, {useState, useEffect} from 'react';
+import React, {useState, useEffect, useContext} from 'react';
 import {
   View,
   StyleSheet,
@@ -12,68 +12,32 @@ import {
 import {REQUESTS_API} from '../extras/APIS';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import {CustomText, FilterButtonSmall, WorkOrderCard} from './common';
+import {GlobalStateContext} from '../routes/GlobalStateProvider';
 
 export default function RequestsScreen({navigation}) {
   const [searchQuery, setSearchQuery] = useState('');
   const [DATA, setDATA] = useState([]);
-
+  const {accessToken} = useContext(GlobalStateContext);
   useEffect(() => {
-    getData('token');
-  }, [])
-  const getData = async (key) => {
-    try {
-      const data = await AsyncStorage.getItem(key);
-      if (data !== null) {
-        getRequests(data);
-        // console.log(data);
-        return data;
-      }
-    } catch (error) {
-      console.log(error);
-    }
-  };
-  
-  // const DATA = [
-  //   {
-  //     title: '3D printer not working',
-  //     location: 'Building 2, 3rd floor, Desk 4',
-  //     asset: '3D Printer',
-  //     priority: 'Low',
-  //     status: 'open',
-  //   },
-  //   {
-  //     title: 'Projector not functioning',
-  //     location: 'Main Office',
-  //     asset: 'LG Projector',
-  //     priority: 'High',
-  //     status: 'open',
-  //   },
-  //   {
-  //     title: 'AC not working',
-  //     location: 'Ground floor Lobby',
-  //     asset: 'AC',
-  //     priority: 'Medium',
-  //     status: 'open',
-  //   },
-  // ];
+    getRequests();
+  }, []);
 
-
-
-  const getRequests = (tokenn) => {
+  const getRequests = () => {
+    console.log(accessToken);
     axios
-    .get(REQUESTS_API , {
-      headers: {
-        "access-token": tokenn,
-      },
-    })
-    .then(function (response) {
-      // console.log(response.data);
-      setDATA(response.data);
-    })
-    .catch(function (error) {
-      console.log(error, 'Request Screen');
-    });
-  }
+      .get(REQUESTS_API, {
+        headers: {
+          'access-token': accessToken,
+        },
+      })
+      .then(function (response) {
+        setDATA(response.data);
+        console.log("Data has arrived", response.data);
+      })
+      .catch(function (error) {
+        console.error(error.response.data, 'Request Screen');
+      });
+  };
   return (
     <>
       <View style={{backgroundColor: '#ffffff', elevation: 5}}>
@@ -143,7 +107,9 @@ export default function RequestsScreen({navigation}) {
         data={DATA.tickets}
         renderItem={({item}) => (
           <>
-            {item.subject.toLowerCase().includes(searchQuery.toLowerCase(), 0) ? (
+            {item.subject
+              .toLowerCase()
+              .includes(searchQuery.toLowerCase(), 0) ? (
               <WorkOrderCard
                 style={{marginTop: 10}}
                 title={item.subject}
@@ -162,7 +128,6 @@ export default function RequestsScreen({navigation}) {
                 }
               />
             ) : null}
-
           </>
         )}
       />

@@ -3,12 +3,8 @@ import {useEffect, useState, useContext} from 'react';
 import {Image, TouchableOpacity, View} from 'react-native';
 import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
 import SettingScreen from '../components/SettingScreen';
-import WorkOrdersScreen from '../components/WorkOrdersScreen';
-import CalendarScreen from '../components/CalendarScreen';
 import HomeStack from './HomeStack';
 import WorkOrderStack from './WorkOrderStack';
-import CreateRequestScreen from '../components/CreateRequestScreen';
-import RequestsScreen from '../components/RequestsScreen';
 import RequestStack from './RequestStack';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import {GlobalStateContext} from '../routes/GlobalStateProvider';
@@ -23,7 +19,6 @@ const TabStack = route => {
 
   useEffect(() => {
     getrole('role');
-    // console.log('tab stack mai role ka value aa gaya: ',role);
     console.log('tab stack role: ', roleOfUser);
   }, []);
 

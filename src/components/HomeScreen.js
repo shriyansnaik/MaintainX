@@ -5,25 +5,26 @@ import {
   ScrollView,
   Image,
   TouchableOpacity,
-  Dimensions,
   Modal,
-  BackHandler
+  BackHandler,
 } from 'react-native';
 import React, {useContext, useEffect} from 'react';
 import {CustomText} from './common';
 import FilterItemButton from './common/FilterItemButton';
 import {GlobalStateContext} from '../routes/GlobalStateProvider';
 
-const {width} = Dimensions.get('screen');
 const Homescreen = ({navigation}) => {
   function handleBackButtonClick() {
-    BackHandler.exitApp()
+    BackHandler.exitApp();
   }
 
   useEffect(() => {
-    BackHandler.addEventListener("hardwareBackPress", handleBackButtonClick);
+    BackHandler.addEventListener('hardwareBackPress', handleBackButtonClick);
     return () => {
-      BackHandler.removeEventListener("hardwareBackPress", handleBackButtonClick);
+      BackHandler.removeEventListener(
+        'hardwareBackPress',
+        handleBackButtonClick,
+      );
     };
   }, []);
   const {modalVisible, setModalVisible} = useContext(GlobalStateContext);
@@ -204,46 +205,6 @@ const Homescreen = ({navigation}) => {
           style={{margin: 10, marginTop: 30}}
         />
       </View>
-      {/* <View
-          style={{
-            flexDirection: 'row',
-            justifyContent: 'space-around',
-            paddingHorizontal: 10,
-            alignItems: 'center',
-            marginBottom: 20,
-          }}>
-        <FilterItemButton
-            textTitle="Past Due"
-            textDesc="Work Orders"
-            imageIcon={require('../assets/icons/cube.png')}
-          />
-          <FilterItemButton
-            // style={{margin: 10}}
-            textTitle="High Priority"
-            textDesc="Work Orders"
-            imageIcon={require('../assets/icons/cube.png')}
-          />
-        </View>
-        <View
-          style={{
-            flexDirection: 'row',
-            justifyContent: 'space-around',
-            paddingHorizontal: 10,
-            alignItems: 'center',
-            marginBottom: 20,
-          }}>
-          <FilterItemButton
-            textTitle="Bookmarked"
-            textDesc="Work Orders"
-            imageIcon={require('../assets/icons/cube.png')}
-          />
-          <FilterItemButton
-            // style={{margin: 10}}
-            textTitle="Last Updated"
-            textDesc="Work Orders"
-            imageIcon={require('../assets/icons/cube.png')}
-          />
-        </View> */}
 
       <View
         style={{

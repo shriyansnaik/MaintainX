@@ -6,7 +6,7 @@ import {
   Image,
   ScrollView,
 } from 'react-native';
-import React, {useState, useEffect} from 'react';
+import React, {useState, useEffect,useContext} from 'react';
 import {CustomText, PriorityButton} from '../components/common';
 import CustomInput from './common/CustomInput';
 import SelectPriorityButton from './common/SelectPriorityButton';
@@ -14,6 +14,7 @@ import ImagePicker from 'react-native-image-crop-picker';
 import axios from 'axios';
 import {CREATE_TICKET_API} from '../extras/APIS';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import {GlobalStateContext} from '../routes/GlobalStateProvider';
 
 export default function CreateRequestScreen({navigation}) {
   const [prioritySelected, setPrioritySelected] = useState('Medium');
@@ -22,24 +23,13 @@ export default function CreateRequestScreen({navigation}) {
   const [assetName, setAssetName] = useState('');
   const [location, setLocation] = useState('');
   const [image, setImage] = useState(null);
-  const [accessToken, setAccessToken] = useState();
   const [postFilled, setPostFilled] = useState(false);
+  const {accessToken} = useContext(GlobalStateContext);
 
   useEffect(() => {
-    if (accessToken === undefined) {
-      getAccessToken();
-    }
     allFieldsFilled();
   }, [title, description, assetName, location]);
 
-  const getAccessToken = async () => {
-    try {
-      const access_token = await AsyncStorage.getItem('token');
-      setAccessToken(access_token);
-    } catch (error) {
-      console.log(error);
-    }
-  };
 
   const thisPriority = p => {
     return p == prioritySelected;
@@ -69,12 +59,11 @@ export default function CreateRequestScreen({navigation}) {
       subject: title,
       description: description,
     });
-    const at = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6InJlcTEiLCJyb2xlIjoicmVxdWVzdGVlIiwiaW50ZXJmYWNlIjp7fSwiaWF0IjoxNjYwNzI5NDA1LCJleHAiOjQ4MDAwMDAwMDE2NjA3MjkwMDB9.OlH2G22Mz8Ax0HlgHYS6rO87e3JOMX2iXZV2R8EEA9g"
     axios
       .post(CREATE_TICKET_API, params, {
         headers: {
           'content-type': 'application/json',
-          'access-token': `${at}`,
+          'access-token': `${accessToken}`,
         },
       })
       .then(function (response) {
@@ -213,7 +202,6 @@ export default function CreateRequestScreen({navigation}) {
               onChangeText={value => setLocation(value)}
             />
           </View>
-          
 
           <View
             style={{backgroundColor: 'white', padding: 10, marginBottom: 15}}>
