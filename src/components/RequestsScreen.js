@@ -21,7 +21,7 @@ export default function RequestsScreen({navigation}) {
   useEffect(() => {
     getRequests();
   }, []);
-
+ 
   const getRequests = () => {
     console.log(accessToken);
     axios
