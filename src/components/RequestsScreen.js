@@ -17,11 +17,16 @@ import {GlobalStateContext} from '../routes/GlobalStateProvider';
 export default function RequestsScreen({navigation}) {
   const [searchQuery, setSearchQuery] = useState('');
   const [DATA, setDATA] = useState([]);
+  const [filteredData, setFilteredDATA] = useState([]);
   const {accessToken} = useContext(GlobalStateContext);
   useEffect(() => {
-    getRequests();
-  }, []);
- 
+    const unsubscribe = navigation.addListener('focus', () => {
+      getRequests();
+    });
+
+    return unsubscribe;
+  }, [navigation]);
+
   const getRequests = () => {
     console.log(accessToken);
     axios
@@ -31,13 +36,21 @@ export default function RequestsScreen({navigation}) {
         },
       })
       .then(function (response) {
-        setDATA(response.data);
-        console.log("Data has arrived", response.data);
+        setDATA(response.data.tickets);
+        // console.log('Data has arrived', response.data);
       })
       .catch(function (error) {
         console.error(error.response.data, 'Request Screen');
       });
   };
+
+  const search = () => {
+    const filtered = DATA.filter(function (item) {
+      return item.subject.includes(searchQuery);
+    });
+    setFilteredDATA(filtered);
+  };
+
   return (
     <>
       <View style={{backgroundColor: '#ffffff', elevation: 5}}>
@@ -75,7 +88,10 @@ export default function RequestsScreen({navigation}) {
             <TextInput
               style={{width: '100%', fontSize: 12, padding: 5}}
               placeholder="Search By WorkOrder Name"
-              onChangeText={searchQuery => setSearchQuery(searchQuery)}
+              onChangeText={searchQuery => {
+                setSearchQuery(searchQuery);
+                search();
+              }}
             />
           </View>
         </View>
@@ -104,32 +120,26 @@ export default function RequestsScreen({navigation}) {
         </View>
       </View>
       <FlatList
-        data={DATA.tickets}
+        data={searchQuery ? filteredData : DATA}
         renderItem={({item}) => (
-          <>
-            {item.subject
-              .toLowerCase()
-              .includes(searchQuery.toLowerCase(), 0) ? (
-              <WorkOrderCard
-                style={{marginTop: 10}}
-                title={item.subject}
-                location={item.company}
-                asset={item.subject}
-                priority={'Medium'}
-                status={item.status}
-                onCardPress={() =>
-                  navigation.navigate('Request Details', {
-                    title: item.subject,
-                    location: item.company,
-                    asset: item.asset,
-                    priority: item.priority,
-                    status: item.status,
-                    id: item._id
-                  })
-                }
-              />
-            ) : null}
-          </>
+          <WorkOrderCard
+            style={{marginTop: 10}}
+            title={item.subject}
+            location={item.location}
+            asset={item.subject}
+            priority={'Medium'}
+            status={item.status}
+            onCardPress={() =>
+              navigation.navigate('Request Details', {
+                title: item.subject,
+                location: item.location,
+                asset: item.asset,
+                priority: item.priority,
+                status: item.status,
+                id: item._id,
+              })
+            }
+          />
         )}
       />
     </>

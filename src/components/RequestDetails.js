@@ -2,7 +2,7 @@ import {View, Text, StyleSheet, Image, TouchableOpacity} from 'react-native';
 import React, {useState, useContext} from 'react';
 import {PriorityButton} from './common';
 import {Button} from 'react-native-paper';
-import {ACCEPT_TICKET_API} from '../extras/APIS';
+import {ACCEPTTTTTTTT, ACCEPT_CLOSE_WORK_ORDER_API, ACCEPT_TICKET_API} from '../extras/APIS';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import axios from 'axios';
 import {GlobalStateContext} from '../routes/GlobalStateProvider';
@@ -15,17 +15,18 @@ export default function RequestDetails({route}) {
     console.log(route.params.id, 'tciket id');
     const id = route.params.id;
     const params = JSON.stringify({
-      ticketid: route.params.id,
+      ticketid: id,
     });
     axios({
       method: 'patch',
-      url: `http://192.168.1.7:3000/technician/acceptTicket/${id}`,params,
+      url: ACCEPT_TICKET_API + '/' + id,
+      params,
       headers: {
-        'access-token': `${accessToken}`,
+        'access-token': accessToken,
       },
     })
       .then(res => {
-        console.log(res.data.msg);
+        console.log(res.data);
       })
       .catch(error => {
         console.log(error);
@@ -50,15 +51,6 @@ export default function RequestDetails({route}) {
     <View style={{flex: 1}}>
       <View style={{height: 400, backgroundColor: 'white'}}>
         <Text style={styles.textStyle}>{route.params.asset}</Text>
-        {/* <Text
-          style={{
-            fontSize: 15,
-            color: 'black',
-            marginLeft: 15,
-            color: 'black',
-          }}>
-          {route.params.priority}
-        </Text> */}
         <PriorityButton priorityText={route.params.priority} />
 
         <Image
@@ -77,7 +69,6 @@ export default function RequestDetails({route}) {
             <Text
               style={{
                 fontSize: 15,
-                color: 'black',
               }}>
               {route.params.title}
             </Text>
@@ -89,7 +80,6 @@ export default function RequestDetails({route}) {
               <Text
                 style={{
                   fontSize: 15,
-                  color: 'black',
 
                   marginLeft: 10,
                 }}>
@@ -101,9 +91,7 @@ export default function RequestDetails({route}) {
       </View>
       <View>
         <TouchableOpacity onPress={() => pushData()} style={styles.buttonStyle}>
-          <Text style={{fontSize: 15, fontWeight: 'bold', color: 'white'}}>
-            Accept
-          </Text>
+          <Text style={{fontSize: 15, fontWeight: 'bold'}}>Accept</Text>
         </TouchableOpacity>
       </View>
     </View>
@@ -112,7 +100,6 @@ export default function RequestDetails({route}) {
 const styles = StyleSheet.create({
   textStyle: {
     fontSize: 25,
-    color: 'black',
     marginTop: 15,
     marginLeft: 15,
     fontWeight: 'bold',

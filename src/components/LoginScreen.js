@@ -21,8 +21,8 @@ const LoginScreen = props => {
   const {} = props;
   const {} = styles;
   const {setAccessToken, setRoleOfUser} = useContext(GlobalStateContext);
-  const [username, setUsername] = useState('Req');
-  const [password, setPassword] = useState('1234');
+  const [username, setUsername] = useState();
+  const [password, setPassword] = useState();
 
   const {height} = useWindowDimensions();
   const navigation = useNavigation();

@@ -12,16 +12,18 @@ import CustomInput from './common/CustomInput';
 import SelectPriorityButton from './common/SelectPriorityButton';
 import ImagePicker from 'react-native-image-crop-picker';
 import axios from 'axios';
-import {CREATE_TICKET_API} from '../extras/APIS';
+import {CREATE_TICKET_API, UPLOAD_IMAGE} from '../extras/APIS';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import {GlobalStateContext} from '../routes/GlobalStateProvider';
+// const bufferImage = require('buffer-image');
+// import bufferImage from 'buffer-image';
 
 export default function CreateRequestScreen({navigation}) {
   const [prioritySelected, setPrioritySelected] = useState('Medium');
-  const [title, setTitle] = useState('');
-  const [description, setDescription] = useState('');
-  const [assetName, setAssetName] = useState('');
-  const [location, setLocation] = useState('');
+  const [title, setTitle] = useState('Flatlist test');
+  const [description, setDescription] = useState('Testing to check if flatlist breaks');
+  const [assetName, setAssetName] = useState('mouse');
+  const [location, setLocation] = useState('area1');
   const [image, setImage] = useState(null);
   const [postFilled, setPostFilled] = useState(false);
   const {accessToken} = useContext(GlobalStateContext);
@@ -31,22 +33,36 @@ export default function CreateRequestScreen({navigation}) {
   }, [title, description, assetName, location]);
 
   const imageUploadTest = () => {
-    const params = JSON.stringify({
-      image: image
+    let formData = new FormData();
+    formData.append("image", image);
+    
+    // const params = JSON.stringify({
+    //   image: image,
+    // });
+    // console.log(params);
+    // axios
+    //   .post(UPLOAD_IMAGE, params)
+    //   .then(function (response) {
+    //     console.log(response);
+    //   })
+    //   .catch(function (error) {
+    //     console.log(error.message, 'Axios error (create request screen)');
+    //   });
+
+    console.log(formData);
+    axios({
+      method: 'post',
+      url: UPLOAD_IMAGE,
+      data: formData,
+      headers: {'Content-Type': 'multipart/form-data'},
     })
-    axios
-      .post(CREATE_TICKET_API, params, {
-        headers: {
-          'content-type': 'application/json',
-          'access-token': `${accessToken}`,
-        },
-      })
       .then(function (response) {
+        //handle success
         console.log(response.data);
       })
-
-      .catch(function (error) {
-        console.log(error, 'Axios error (create request screen)');
+      .catch(function (response) {
+        //handle error
+        console.log(response);
       });
   };
 
@@ -58,10 +74,12 @@ export default function CreateRequestScreen({navigation}) {
     ImagePicker.openCamera({
       cropping: true,
       compressImageQuality: 0.1,
-    }).then(image => {
-      const imageUri = Platform.OS === 'ios' ? image.sourceURL : image.path;
-      setImage(imageUri);
-    });
+    })
+      .then(image => {
+        const imageUri = Platform.OS === 'ios' ? image.sourceURL : image.path;
+        setImage(imageUri);
+      })
+      .catch(err => console.log('Error clicking image: ', err.message));
   };
 
   const allFieldsFilled = () => {
@@ -90,7 +108,7 @@ export default function CreateRequestScreen({navigation}) {
       .then(function (response) {
         console.log(response.data);
         console.log('done');
-        navigation.goBack();
+        // navigation.goBack();
       })
 
       .catch(function (error) {
@@ -123,7 +141,7 @@ export default function CreateRequestScreen({navigation}) {
             }}
           />
         </TouchableOpacity>
-        <TouchableOpacity activeOpacity={1} onPress={() => console.log(image)}>
+        <TouchableOpacity activeOpacity={1} onPress={() => imageUploadTest()}>
           <CustomText
             text="Create Request"
             textWeight={600}
