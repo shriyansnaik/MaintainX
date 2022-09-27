@@ -54,9 +54,6 @@ const Homescreen = ({navigation}) => {
             borderTopRightRadius: 15,
           }}>
           <View
-            onPress={() => (
-              navigation.navigate('Create Request'), setModalVisible(false)
-            )}
             style={{
               padding: 15,
               backgroundColor: '#FAFAFA',
@@ -71,12 +68,7 @@ const Homescreen = ({navigation}) => {
           <TouchableOpacity
             onPress={() => (
               navigation.navigate('Create Request'), setModalVisible(false)
-            )}
-            // activeOpacity={1}
-            style={{
-              // backgroundColor: '#00000030',
-              height: '100%',
-            }}>
+            )}>
             <View
               style={{
                 flexDirection: 'row',
@@ -88,6 +80,24 @@ const Homescreen = ({navigation}) => {
                 source={require('../assets/icons/workorder.png')}
               />
               <CustomText text="Request" textWeight={500} textSize={18} />
+            </View>
+          </TouchableOpacity>
+
+          <TouchableOpacity
+            onPress={() => (
+              navigation.navigate('Get Locations'), setModalVisible(false)
+            )}>
+            <View
+              style={{
+                flexDirection: 'row',
+                alignItems: 'center',
+                padding: 15,
+              }}>
+              <Image
+                style={{height: 25, width: 25, marginRight: 10}}
+                source={require('../assets/icons/workorder.png')}
+              />
+              <CustomText text="Locations" textWeight={500} textSize={18} />
             </View>
           </TouchableOpacity>
         </View>

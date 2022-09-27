@@ -2,6 +2,10 @@ import * as React from 'react';
 import {createNativeStackNavigator} from '@react-navigation/native-stack';
 import HomeScreen from '../components/HomeScreen';
 import SettingScreen from '../components/SettingScreen';
+import GetLocations from '../components/common/GetLocations';
+import GetSubdivision from '../components/common/GetSubdivision';
+import GetRooms from '../components/common/GetRooms';
+import GetAssets from '../components/common/GetAssets';
 import {Image, TouchableOpacity, View} from 'react-native';
 import CreateRequestScreen from '../components/CreateRequestScreen';
 const HomeStackNav = createNativeStackNavigator();
@@ -54,7 +58,27 @@ const HomeStack = ({navigation}) => {
         name="Create Request"
         component={CreateRequestScreen}
         options={{headerShown: false}}
-        
+      />
+      <HomeStackNav.Screen
+        name="Get Locations"
+        component={GetLocations}
+        // options={{headerShown: false}}
+      />
+
+      <HomeStackNav.Screen
+        name="Get Subdivision"
+        component={GetSubdivision}
+        // options={{headerShown: false}}
+      />
+          <HomeStackNav.Screen
+        name="Get Rooms"
+        component={GetRooms}
+        // options={{headerShown: false}}
+      />
+          <HomeStackNav.Screen
+        name="Get Assets"
+        component={GetAssets}
+        // options={{headerShown: false}}
       />
     </HomeStackNav.Navigator>
   );
