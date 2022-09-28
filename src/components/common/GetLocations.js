@@ -1,9 +1,9 @@
-import {View, Text, FlatList} from 'react-native';
-import React from 'react';
-import {GET_LOCATIONS} from '../../extras/APIS';
+import { View, Text, FlatList } from 'react-native';
+import React, { useState } from 'react';
+import { GET_LOCATIONS } from '../../extras/APIS';
 import SettingsItem from './SettingsItem';
 
-export default function GetLocations({navigation}) {
+export default function GetLocations({ navigation }) {
   const DATA = [
     {
       _id: '632312cc6cf7197bbc739a40',
@@ -341,6 +341,8 @@ export default function GetLocations({navigation}) {
       __v: 0,
     },
   ];
+
+  const [requestData, setRequestData] = useState({ unit: "", subdivision: "", room: "", asset: "" })
   const getLocations = () => {
     console.log(accessToken);
     axios
@@ -357,19 +359,28 @@ export default function GetLocations({navigation}) {
         console.error(error.response.data, 'Request Screen');
       });
   };
+
+  const addToRequestData = (val) =>{
+  requestData.unit=val
+  }
+
+
   return (
     <View>
-     
+
       <FlatList
         data={DATA}
-        renderItem={({item}) => (
+        renderItem={({ item }) => (
           <SettingsItem
             imageIcon={require('../../assets/icons/doublearrow.png')}
-            textTitle={'Unit - ' + item.unit_or_building + ', '+  item.locality}
-            onButtonPress={()=>navigation.navigate('Get Subdivision',{DATA:item.subdivision,loc:item.unit_or_building})}
+            textTitle={'Unit - ' + item.unit_or_building + ', ' + item.locality}
+            onButtonPress={() => {
+              addToRequestData(item.unit_or_building)
+              navigation.navigate('Get Subdivision', { DATA: item.subdivision, loc: item.unit_or_building, requestData: requestData })
+            }}
           />
         )}
-        // keyExtractor={(item) => item.id}
+      // keyExtractor={(item) => item.id}
       />
     </View>
   );

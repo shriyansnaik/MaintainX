@@ -1,10 +1,10 @@
-import {View, Text, FlatList} from 'react-native';
+import { View, Text, FlatList } from 'react-native';
 import React from 'react';
-import {GET_LOCATIONS} from '../../extras/APIS';
+import { GET_LOCATIONS } from '../../extras/APIS';
 import SettingsItem from './SettingsItem';
 import { TabRouter } from '@react-navigation/native';
 
-export default function GetAssets({route}) {
+export default function GetAssets({ route ,navigation}) {
 
   const getLocations = () => {
     console.log(accessToken);
@@ -22,20 +22,31 @@ export default function GetAssets({route}) {
         console.error(error.response.data, 'Request Screen');
       });
   };
+  const addToRequestData = (val) => {
+    route.params.requestData.asset = val
+  }
+
   return (
     <View>
-     
+
       <FlatList
         data={route.params.DATA}
-        renderItem={({item}) => (
+        renderItem={({ item }) => (
           <SettingsItem
             imageIcon={require('../../assets/icons/doublearrow.png')}
-            textTitle={item.model_name + ', Room No -'+ route.params.loc }
-            // onButtonPress={()=>console.log(route.params.DATA)}
-            
+            textTitle={item.model_name + ', Room No -' + route.params.loc}
+            onButtonPress={
+
+              () => {
+                addToRequestData(item.model_name),
+                // console.log(route.params.requestData)
+                navigation.navigate("Create Request",{requestData:route.params.requestData})
+              }
+            }
+
           />
         )}
-        // keyExtractor={(item) => item.id}
+      // keyExtractor={(item) => item.id}
       />
     </View>
   );

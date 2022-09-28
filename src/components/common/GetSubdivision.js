@@ -22,6 +22,12 @@ export default function GetSubdivision({route,navigation}) {
         console.error(error.response.data, 'Request Screen');
       });
   };
+
+  
+  const addToRequestData = (val) =>{
+    route.params.requestData.subdivision=val
+    }
+  
   return (
     <View>
      
@@ -31,7 +37,9 @@ export default function GetSubdivision({route,navigation}) {
           <SettingsItem
             imageIcon={require('../../assets/icons/doublearrow.png')}
             textTitle={item.floor + ', Unit - '+ route.params.loc }
-            onButtonPress={()=>navigation.navigate('Get Rooms',{DATA:item.rooms,loc:item.floor})}
+            onButtonPress={()=>{addToRequestData(item.floor)
+              navigation.navigate('Get Rooms',{DATA:item.rooms,loc:item.floor,requestData: route.params.requestData})}}
+            // onButtonPress={()=>console.log(route.params.requestData)}
           />
         )}
         // keyExtractor={(item) => item.id}

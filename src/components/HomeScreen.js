@@ -65,7 +65,7 @@ const Homescreen = ({navigation}) => {
               backgroundColor: '#ECECEC',
               height: 1,
             }}></View>
-          <TouchableOpacity
+          {/* <TouchableOpacity
             onPress={() => (
               navigation.navigate('Create Request'), setModalVisible(false)
             )}>
@@ -81,7 +81,7 @@ const Homescreen = ({navigation}) => {
               />
               <CustomText text="Request" textWeight={500} textSize={18} />
             </View>
-          </TouchableOpacity>
+          </TouchableOpacity> */}
 
           <TouchableOpacity
             onPress={() => (
@@ -97,7 +97,7 @@ const Homescreen = ({navigation}) => {
                 style={{height: 25, width: 25, marginRight: 10}}
                 source={require('../assets/icons/workorder.png')}
               />
-              <CustomText text="Locations" textWeight={500} textSize={18} />
+              <CustomText text="Request" textWeight={500} textSize={18} />
             </View>
           </TouchableOpacity>
         </View>
