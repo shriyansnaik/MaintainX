@@ -1,8 +1,11 @@
 import {View, Image, TouchableOpacity, Modal, Alert} from 'react-native';
 import {CustomText} from './common';
-import React, {useState} from 'react';
+import React, {useState, useContext} from 'react';
+import {GlobalStateContext} from '../routes/GlobalStateProvider';
+import axios from 'axios';
+import {ACCEPT_TICKET_API, CLOSE_WORK_ORDER_API} from '../extras/APIS';
 
-export default function WorkOrderDetails() {
+export default function WorkOrderDetails({route, navigation}) {
   const [modalVisible, setModalVisible] = useState(false);
   const [currentStatus, setCurrentStatus] = useState('Open');
   const [currentStatusIcon, setCurrentStatusIcon] = useState(
@@ -13,7 +16,28 @@ export default function WorkOrderDetails() {
     setCurrentStatus(status),
       setModalVisible(false),
       setCurrentStatusIcon(icon);
+    navigation.pop();
   };
+
+  const {accessToken} = useContext(GlobalStateContext);
+
+  const updateStatus = () => {
+    const id = route.params.id;
+    console.log(id);
+    const body = JSON.stringify({
+      status: 'close',
+    });
+    axios
+      .patch(CLOSE_WORK_ORDER_API + '/' + id, body, {
+        headers: {
+          'content-type': 'application/json',
+          'access-token': accessToken,
+        },
+      })
+      .then(result => console.log(result))
+      .catch(error => console.log(error));
+  };
+
   return (
     <View style={{flex: 1, backgroundColor: '#F2F2F2'}}>
       <View>
@@ -288,6 +312,7 @@ export default function WorkOrderDetails() {
               changeStatusandModal(
                 'Complete',
                 require('../assets/icons/complete.png'),
+                updateStatus(),
               )
             }
             style={{

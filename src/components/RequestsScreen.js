@@ -1,5 +1,5 @@
 import axios from 'axios';
-import React, {useState, useEffect} from 'react';
+import React, {useState, useEffect, useContext} from 'react';
 import {
   View,
   StyleSheet,
@@ -12,68 +12,45 @@ import {
 import {REQUESTS_API} from '../extras/APIS';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import {CustomText, FilterButtonSmall, WorkOrderCard} from './common';
+import {GlobalStateContext} from '../routes/GlobalStateProvider';
 
 export default function RequestsScreen({navigation}) {
   const [searchQuery, setSearchQuery] = useState('');
   const [DATA, setDATA] = useState([]);
-
+  const [filteredData, setFilteredDATA] = useState([]);
+  const {accessToken} = useContext(GlobalStateContext);
   useEffect(() => {
-    getData('token');
-  }, [])
-  const getData = async (key) => {
-    try {
-      const data = await AsyncStorage.getItem(key);
-      if (data !== null) {
-        getRequests(data);
-        // console.log(data);
-        return data;
-      }
-    } catch (error) {
-      console.log(error);
-    }
-  };
-  
-  // const DATA = [
-  //   {
-  //     title: '3D printer not working',
-  //     location: 'Building 2, 3rd floor, Desk 4',
-  //     asset: '3D Printer',
-  //     priority: 'Low',
-  //     status: 'open',
-  //   },
-  //   {
-  //     title: 'Projector not functioning',
-  //     location: 'Main Office',
-  //     asset: 'LG Projector',
-  //     priority: 'High',
-  //     status: 'open',
-  //   },
-  //   {
-  //     title: 'AC not working',
-  //     location: 'Ground floor Lobby',
-  //     asset: 'AC',
-  //     priority: 'Medium',
-  //     status: 'open',
-  //   },
-  // ];
-
-
-
-  const getRequests = (tokenn) => {
-    axios
-    .get(REQUESTS_API , {
-      headers: {
-        "access-token": tokenn,
-      },
-    })
-    .then(function (response) {
-      // console.log(response.data);
-      setDATA(response.data);
-    })
-    .catch(function (error) {
-      console.log(error, 'Request Screen');
+    const unsubscribe = navigation.addListener('focus', () => {
+      getRequests();
     });
-  }
+
+    return unsubscribe;
+  }, [navigation]);
+
+  const getRequests = () => {
+    console.log(accessToken);
+    axios
+      .get(REQUESTS_API, {
+        headers: {
+          'access-token': accessToken,
+        },
+      })
+      .then(function (response) {
+        setDATA(response.data.tickets);
+        // console.log('Data has arrived', response.data);
+      })
+      .catch(function (error) {
+        console.error(error.response.data, 'Request Screen');
+      });
+  };
+
+  const search = () => {
+    const filtered = DATA.filter(function (item) {
+      return item.subject.includes(searchQuery);
+    });
+    setFilteredDATA(filtered);
+  };
+
   return (
     <>
       <View style={{backgroundColor: '#ffffff', elevation: 5}}>
@@ -111,7 +88,10 @@ export default function RequestsScreen({navigation}) {
             <TextInput
               style={{width: '100%', fontSize: 12, padding: 5}}
               placeholder="Search By WorkOrder Name"
-              onChangeText={searchQuery => setSearchQuery(searchQuery)}
+              onChangeText={searchQuery => {
+                setSearchQuery(searchQuery);
+                search();
+              }}
             />
           </View>
         </View>
@@ -140,30 +120,26 @@ export default function RequestsScreen({navigation}) {
         </View>
       </View>
       <FlatList
-        data={DATA.tickets}
+        data={searchQuery ? filteredData : DATA}
         renderItem={({item}) => (
-          <>
-            {item.subject.toLowerCase().includes(searchQuery.toLowerCase(), 0) ? (
-              <WorkOrderCard
-                style={{marginTop: 10}}
-                title={item.subject}
-                location={item.company}
-                asset={item.subject}
-                priority={'Medium'}
-                status={item.status}
-                onCardPress={() =>
-                  navigation.navigate('Request Details', {
-                    title: item.subject,
-                    location: item.company,
-                    asset: item.asset,
-                    priority: item.priority,
-                    status: item.status,
-                  })
-                }
-              />
-            ) : null}
-
-          </>
+          <WorkOrderCard
+            style={{marginTop: 10}}
+            title={item.subject}
+            location={item.location}
+            asset={item.subject}
+            priority={'Medium'}
+            status={item.status}
+            onCardPress={() =>
+              navigation.navigate('Request Details', {
+                title: item.subject,
+                location: item.location,
+                asset: item.asset,
+                priority: item.priority,
+                status: item.status,
+                id: item._id,
+              })
+            }
+          />
         )}
       />
     </>

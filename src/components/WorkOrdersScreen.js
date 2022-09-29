@@ -1,4 +1,4 @@
-import React, {useState, useEffect} from 'react';
+import React, {useState, useEffect, useContext} from 'react';
 import axios from 'axios';
 import {
   View,
@@ -12,61 +12,36 @@ import {
 import {WORK_ORDERS_API} from '../extras/APIS';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import {CustomText, FilterButtonSmall, WorkOrderCard} from './common';
+import {GlobalStateContext} from '../routes/GlobalStateProvider';
 
 const WorkOrdersScreen = ({navigation}) => {
   const [searchQuery, setSearchQuery] = useState('');
   const [DATA, setDATA] = useState([]);
-
-  // const accessToken = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6InVzZXIxIiwicm9sZSI6InJlcXVlc3RlZSIsImludGVyZmFjZSI6e30sImlhdCI6MTY2MDEyNDMxMCwiZXhwIjoxNjY0OTI0MzEwfQ.hC0VJUzOWeC9B0IxbBgBzNAK4Oy-5vm-DgsBl3hXo94"
+  const {accessToken} = useContext(GlobalStateContext);
 
   useEffect(() => {
-    getData('token');
-  }, [])
-  const getData = async (key) => {
-    try {
-      const data = await AsyncStorage.getItem(key);
-      if (data !== null) {
-        console.log(data);
-        getRequests(data);
-        return data;
-      }
-    } catch (error) {
-      console.log(error);
-    }
+    const unsubscribe = navigation.addListener('focus', () => {
+      getRequests();
+    });
+
+    return unsubscribe;
+  }, [navigation]);
+
+  const getRequests = () => {
+    axios
+      .get(WORK_ORDERS_API, {
+        headers: {
+          'access-token': accessToken,
+        },
+      })
+      .then(function (response) {
+        console.log(response.data.ticket);
+        setDATA(response.data.ticket);
+      })
+      .catch(function (error) {
+        console.log(error, 'Work Orders Screen');
+      });
   };
-
-  // const DATA = [
-  //   {
-  //     title: 'Laptop not working',
-  //     location: 'Building 2, 3rd floor, Desk 4',
-  //     asset: 'Dell Laptop',
-  //     priority: 'Low',
-  //     status: 'open',
-  //   },
-  //   {
-  //     title: 'AC not working',
-  //     location: 'Ground floor Lobby',
-  //     asset: 'AC',
-  //     priority: 'Medium',
-  //     status: 'In-progress',
-  //   },
-  // ];
-
-const getRequests = (tokenn) => {
-  axios
-  .get(WORK_ORDERS_API , {
-    headers: {
-      "access-token": tokenn,
-    },
-  })
-  .then(function (response) {
-    console.log(response.data);
-    setDATA(response.data);
-  })
-  .catch(function (error) {
-    console.log(error, 'Work Orders Screen');
-  });
-}
 
   return (
     <>
@@ -110,7 +85,7 @@ const getRequests = (tokenn) => {
               source={require('../assets/icons/loupe.png')}
             />
             <TextInput
-            style={{ width: '100%', fontSize: 12,padding: 5}}
+              style={{width: '100%', fontSize: 12, padding: 5}}
               placeholder="Search By WorkOrder Name"
               onChangeText={searchQuery => setSearchQuery(searchQuery)}
             />
@@ -139,21 +114,23 @@ const getRequests = (tokenn) => {
             style={{backgroundColor: '#F2EDED'}}
           />
         </View>
-
-        
       </View>
       <FlatList
         data={DATA}
         renderItem={({item}) => (
           <>
-            {item.title.toLowerCase().includes(searchQuery.toLowerCase(), 0) ? (
+            {item.subject
+              .toLowerCase()
+              .includes(searchQuery.toLowerCase(), 0) ? (
               <WorkOrderCard
-                title={item.title}
+                title={item.subject}
                 location={item.location}
-                asset={item.asset}
+                asset={item.asset_name}
                 priority={item.priority}
                 status={item.status}
-                onCardPress={() => navigation.navigate('Work Order Details')}
+                onCardPress={() =>
+                  navigation.navigate('Work Order Details', {id: item._id})
+                }
                 style={{marginTop: 10}}
               />
             ) : null}

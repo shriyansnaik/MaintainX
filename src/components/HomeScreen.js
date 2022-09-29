@@ -5,16 +5,28 @@ import {
   ScrollView,
   Image,
   TouchableOpacity,
-  Dimensions,
   Modal,
+  BackHandler,
 } from 'react-native';
-import React, {useContext} from 'react';
+import React, {useContext, useEffect} from 'react';
 import {CustomText} from './common';
 import FilterItemButton from './common/FilterItemButton';
 import {GlobalStateContext} from '../routes/GlobalStateProvider';
 
-const {width} = Dimensions.get('screen');
 const Homescreen = ({navigation}) => {
+  function handleBackButtonClick() {
+    BackHandler.exitApp();
+  }
+
+  useEffect(() => {
+    BackHandler.addEventListener('hardwareBackPress', handleBackButtonClick);
+    return () => {
+      BackHandler.removeEventListener(
+        'hardwareBackPress',
+        handleBackButtonClick,
+      );
+    };
+  }, []);
   const {modalVisible, setModalVisible} = useContext(GlobalStateContext);
   const CreateScreenModal = () => {
     return (
@@ -42,9 +54,6 @@ const Homescreen = ({navigation}) => {
             borderTopRightRadius: 15,
           }}>
           <View
-            onPress={() => (
-              navigation.navigate('Create Request'), setModalVisible(false)
-            )}
             style={{
               padding: 15,
               backgroundColor: '#FAFAFA',
@@ -56,15 +65,28 @@ const Homescreen = ({navigation}) => {
               backgroundColor: '#ECECEC',
               height: 1,
             }}></View>
-          <TouchableOpacity
+          {/* <TouchableOpacity
             onPress={() => (
               navigation.navigate('Create Request'), setModalVisible(false)
-            )}
-            // activeOpacity={1}
-            style={{
-              // backgroundColor: '#00000030',
-              height: '100%',
-            }}>
+            )}>
+            <View
+              style={{
+                flexDirection: 'row',
+                alignItems: 'center',
+                padding: 15,
+              }}>
+              <Image
+                style={{height: 25, width: 25, marginRight: 10}}
+                source={require('../assets/icons/workorder.png')}
+              />
+              <CustomText text="Request" textWeight={500} textSize={18} />
+            </View>
+          </TouchableOpacity> */}
+
+          <TouchableOpacity
+            onPress={() => (
+              navigation.navigate('Get Locations'), setModalVisible(false)
+            )}>
             <View
               style={{
                 flexDirection: 'row',
@@ -193,46 +215,6 @@ const Homescreen = ({navigation}) => {
           style={{margin: 10, marginTop: 30}}
         />
       </View>
-      {/* <View
-          style={{
-            flexDirection: 'row',
-            justifyContent: 'space-around',
-            paddingHorizontal: 10,
-            alignItems: 'center',
-            marginBottom: 20,
-          }}>
-        <FilterItemButton
-            textTitle="Past Due"
-            textDesc="Work Orders"
-            imageIcon={require('../assets/icons/cube.png')}
-          />
-          <FilterItemButton
-            // style={{margin: 10}}
-            textTitle="High Priority"
-            textDesc="Work Orders"
-            imageIcon={require('../assets/icons/cube.png')}
-          />
-        </View>
-        <View
-          style={{
-            flexDirection: 'row',
-            justifyContent: 'space-around',
-            paddingHorizontal: 10,
-            alignItems: 'center',
-            marginBottom: 20,
-          }}>
-          <FilterItemButton
-            textTitle="Bookmarked"
-            textDesc="Work Orders"
-            imageIcon={require('../assets/icons/cube.png')}
-          />
-          <FilterItemButton
-            // style={{margin: 10}}
-            textTitle="Last Updated"
-            textDesc="Work Orders"
-            imageIcon={require('../assets/icons/cube.png')}
-          />
-        </View> */}
 
       <View
         style={{

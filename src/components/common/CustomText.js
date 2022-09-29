@@ -44,30 +44,16 @@ const CustomText = ({
     <Text
       numberOfLines={numberOfLines}
       ellipsizeMode={ellippsizeMode}
-      // style={[
-      //   styles.defaultTextStyle,
-      //   textStyle(textColor, textWeight, textSize, textAlign),
-      //   style,
-      // ]}
       style={[
-        styles.defaultTextStyle,
-        textWeight ? textStyle(textWeight) : null,
-        textSize ? {fontSize: textSize} : null,
-        textColor ? {color: textColor} : null,
-        style
+        textWeight ? textStyle(textWeight) : 'Raleway-Regular',
+        textSize ? {fontSize: textSize} : 25,
+        textColor ? {color: textColor} : 'black',
+        style,
       ]}>
       {text}
       {children}
     </Text>
   );
-};
-
-const styles = {
-  defaultTextStyle: {
-    fontFamily: 'Raleway-Regular',
-    color: 'black',
-    fontSize: 25,
-  },
 };
 
 export {CustomText};

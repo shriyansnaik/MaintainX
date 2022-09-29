@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {useState, useEffect, useContext} from 'react';
 import {
   View,
   Text,
@@ -6,6 +6,7 @@ import {
   StyleSheet,
   useWindowDimensions,
   ScrollView,
+  BackHandler,
 } from 'react-native';
 import {CustomText} from './common';
 import CustomInput from './common/CustomInput';
@@ -14,75 +15,17 @@ import {useNavigation} from '@react-navigation/native';
 import axios from 'axios';
 import {LOGIN_SCREEN_API} from '../extras/APIS';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-
-const login = (username, password, navigation) => {
-  const params = JSON.stringify({
-    username: username,
-    password: password,
-  });
-  axios
-    .post(LOGIN_SCREEN_API, params, {
-      headers: {
-        'content-type': 'application/json',
-      },
-    })
-    .then(function (response) {
-      // console.log(response.data);
-      storeData(response.data);
-      navigation.navigate('MainApp');
-    })
-
-    .catch(function (error) {
-      console.log(error, 'Error Password');
-      alert('Oops! Wrong Password or Username!');
-    });
-
-  const storeData = async value => {
-    try {
-      await AsyncStorage.setItem('token', value.access_token);
-      await AsyncStorage.setItem('role', value.role);
-    } catch (err) {
-      console.log(err);
-    }
-  };
-
-  // const body = JSON.stringify({username, password});
-
-  // try {
-  //   const res = axios.post('/http://localhost:3000/login', body);
-  //   // dispatch({
-  //   //     // type:LOGIN_SUCCESS,
-  //   //     payload:res.data
-  //   // })
-
-  //   // dispatch(loadUser());
-  //   console.log('Success', res);
-  // } catch (err) {
-  //   const errors = err.response;
-  //   if (errors) {
-  //     //  errors.forEach(error=>dispatch(setAlert(error.msg,'danger')))
-  //     console.log('Error');
-  //   }
-  //   // dispatch({
-  //   //     // type:LOGIN_FAIL
-  //   // })
-  // }
-};
+import {GlobalStateContext} from '../routes/GlobalStateProvider';
 
 const LoginScreen = props => {
   const {} = props;
   const {} = styles;
-
-  const [username, setUsername] = useState('user1');
-  const [password, setPassword] = useState('1234');
+  const {setAccessToken, setRoleOfUser} = useContext(GlobalStateContext);
+  const [username, setUsername] = useState();
+  const [password, setPassword] = useState();
 
   const {height} = useWindowDimensions();
   const navigation = useNavigation();
-
-  const onLogInPressed = () => {
-    // validate user
-    navigation.navigate('MainApp');
-  };
 
   const onForgotPasswordPressed = () => {
     navigation.navigate('ForgotPassword');
@@ -90,6 +33,41 @@ const LoginScreen = props => {
 
   const onSignUpPress = () => {
     navigation.navigate('SignUp');
+  };
+
+  const login = () => {
+    const params = JSON.stringify({
+      username: username,
+      password: password,
+    });
+    axios
+      .post(LOGIN_SCREEN_API, params, {
+        headers: {
+          'content-type': 'application/json',
+        },
+      })
+      .then(function (response) {
+        // console.log(response.data);
+        storeData(response.data);
+        navigation.navigate('MainApp');
+      })
+
+      .catch(function (error) {
+        console.log(error, 'Error Password');
+        alert('Oops! Wrong Password or Username!');
+      });
+
+    const storeData = async value => {
+      try {
+        setAccessToken(value.access_token);
+        setRoleOfUser(value.role);
+
+        await AsyncStorage.setItem('token', value.access_token);
+        await AsyncStorage.setItem('role', value.role);
+      } catch (err) {
+        console.log(err);
+      }
+    };
   };
 
   return (
@@ -117,9 +95,7 @@ const LoginScreen = props => {
 
         <CustomButton
           text="Log In"
-          onPress={() =>
-            login(username, password, navigation)
-          }
+          onPress={() => login()}
           // onPress={() => navigation.navigate('MainApp')}
         />
 
