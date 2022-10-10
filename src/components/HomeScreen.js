@@ -12,7 +12,7 @@ import React, {useContext, useEffect} from 'react';
 import {CustomText} from './common';
 import FilterItemButton from './common/FilterItemButton';
 import {GlobalStateContext} from '../routes/GlobalStateProvider';
-
+import LinearGradient from 'react-native-linear-gradient';
 const Homescreen = ({navigation}) => {
   function handleBackButtonClick() {
     BackHandler.exitApp();
@@ -107,9 +107,14 @@ const Homescreen = ({navigation}) => {
   return (
     <ScrollView style={{flex: 1, width: '100%'}}>
       <CreateScreenModal />
-      {/* '#d0e1fb', */}
-      <View
-        style={{padding: 50, backgroundColor: '#cbe0fb', alignItems: 'center'}}>
+
+      <View>
+       <LinearGradient
+       colors={[
+   'rgb(235,233,255)','rgb(191, 222, 250)'
+]}
+      style={{ padding: 50, alignItems: 'center' }}>
+
         <CustomText
           style={{marginBottom: 5}}
           textSize={18}
@@ -123,7 +128,7 @@ const Homescreen = ({navigation}) => {
           text={" Today's Work "}
         />
         <Image
-          style={{height: 50, width: 40, padding: 15, marginBottom: 15}}
+          style={{height: 25, width: 25, padding: 15, marginBottom: 15}}
           source={require('../assets/icons/calendar.png')}
         />
         <CustomText
@@ -139,7 +144,7 @@ const Homescreen = ({navigation}) => {
           }}
           style={{
             padding: 10,
-            backgroundColor: '#0b6ff9',
+            backgroundColor: '#0b6efc',
             borderRadius: 20,
             alignItems: 'center',
             width: 200,
@@ -151,7 +156,9 @@ const Homescreen = ({navigation}) => {
             text={'View my work'}
           />
         </TouchableOpacity>
+        </LinearGradient>
       </View>
+      
       <View>
         <View
           style={{
