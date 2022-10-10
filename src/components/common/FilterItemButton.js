@@ -23,14 +23,16 @@ const styles = {
     // alignItems: 'center',
     // // width: '45%',
     // borderRadius: 10,
-    backgroundColor: '#1c1c1c50',
+    backgroundColor: '#fafafa',
     height: 155,
     width: 165,
     padding: 10,
-    borderRadius: 5,
+    borderRadius: 10,
     overflow: 'hidden',
-  	borderWidth: 1,
-    borderColor: "#e6e8eb",
+  	borderWidth: 2,
+    borderColor: "#e8e8e8",
+
+
   },
   textStyle: {
     color: 'black',

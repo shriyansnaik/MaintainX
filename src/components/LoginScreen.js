@@ -50,6 +50,7 @@ const LoginScreen = props => {
         // console.log(response.data);
         storeData(response.data);
         navigation.navigate('MainApp');
+        console.log(done)
       })
 
       .catch(function (error) {
