@@ -3,7 +3,7 @@ import React from 'react';
 import { GET_LOCATIONS } from '../../extras/APIS';
 import SettingsItem from './SettingsItem';
 import { TabRouter } from '@react-navigation/native';
-
+import Location from './Location';
 export default function GetRooms({ route, navigation }) {
 
   const getLocations = () => {
@@ -31,10 +31,11 @@ export default function GetRooms({ route, navigation }) {
       <FlatList
         data={route.params.DATA}
         renderItem={({ item }) => (
-          <SettingsItem
-            imageIcon={require('../../assets/icons/doublearrow.png')}
-            textTitle={'Room No - ' + item.room + ', ' + route.params.loc}
-            onButtonPress={() => {
+          <Location
+           
+            textTitle={route.params.loc}
+            textSubtitle={'Room No - ' + item.room} 
+            onClick={() => {
               addToRequestData(item.room)
               navigation.navigate('Get Assets', { DATA: item.assets, loc: item.room, requestData: route.params.requestData })
             }}

@@ -8,7 +8,7 @@ const FilterItemButton = props => {
       <View>
         <Text style={styles.textStyle}>{textTitle}</Text>
         <Text style={styles.textdescStyle} >{textDesc}</Text>
-        <Image style={styles.imageStyle} source={imageIcon} />
+        <Image style={styles.imageStyle} source={imageIcon}  />
       </View>
     </TouchableOpacity>
   );
@@ -46,7 +46,7 @@ const styles = {
     width: 50,
     height: 50,
     resizeMode: 'contain',
-    
+     
     },
     textdescStyle:
     {

@@ -1,7 +1,7 @@
 import {View, Text, FlatList} from 'react-native';
 import React from 'react';
 import {GET_LOCATIONS} from '../../extras/APIS';
-import SettingsItem from './SettingsItem';
+import Location from './Location';
 import { TabRouter } from '@react-navigation/native';
 
 export default function GetSubdivision({route,navigation}) {
@@ -34,10 +34,13 @@ export default function GetSubdivision({route,navigation}) {
       <FlatList
         data={route.params.DATA}
         renderItem={({item}) => (
-          <SettingsItem
-            imageIcon={require('../../assets/icons/doublearrow.png')}
-            textTitle={item.floor + ', Unit - '+ route.params.loc }
-            onButtonPress={()=>{addToRequestData(item.floor)
+
+          <Location
+           
+            textTitle={'Unit - '+ route.params.loc }
+            
+textSubtitle={item.floor}
+            onClick={()=>{addToRequestData(item.floor)
               navigation.navigate('Get Rooms',{DATA:item.rooms,loc:item.floor,requestData: route.params.requestData})}}
             // onButtonPress={()=>console.log(route.params.requestData)}
           />

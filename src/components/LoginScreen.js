@@ -40,6 +40,7 @@ const LoginScreen = props => {
   };
 
   const login = () => {
+    console.log("logging you in..." ,username, password);
     const params = JSON.stringify({
       username: username,
       password: password,
@@ -110,7 +111,8 @@ const LoginScreen = props => {
           <TextInput
           placeholder='Password'
           value={password}
-          setValue={setPassword}
+          // setValue={setPassword}
+          onChangeText={(val)=>setPassword(val)}
           secureTextEntry={!show_password}
           style={{color:'gray'}}
           />

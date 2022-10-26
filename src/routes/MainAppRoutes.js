@@ -31,7 +31,7 @@ function MainAppRoutes() {
           }}
         /> */}
 
-        {/* <Stack.Screen
+        <Stack.Screen
           name="Splash"
           component={SplashScreen}
           options={{
@@ -51,7 +51,7 @@ function MainAppRoutes() {
           options={{
             headerShown: false,
           }}
-        /> */}
+        />
         <Stack.Screen
           name="MainApp"
           component={TabStack}

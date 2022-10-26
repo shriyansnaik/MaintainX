@@ -1,3 +1,4 @@
+/* eslint-disable prettier/prettier */
 import React, {useState, useEffect, useContext} from 'react';
 import axios from 'axios';
 import {
@@ -35,8 +36,8 @@ const WorkOrdersScreen = ({navigation}) => {
         },
       })
       .then(function (response) {
-        console.log(response.data.ticket);
-        setDATA(response.data.ticket);
+        console.log(response.data.tickets);
+        setDATA(response.data.tickets);
       })
       .catch(function (error) {
         console.log(error, 'Work Orders Screen');
@@ -129,7 +130,12 @@ const WorkOrdersScreen = ({navigation}) => {
                 priority={item.priority}
                 status={item.status}
                 onCardPress={() =>
-                  navigation.navigate('Work Order Details', {id: item._id})
+                  navigation.navigate('Work Order Details',  {
+                    title:item.subject,
+                  location:item.location,
+                  asset:item.asset_name,
+                  priority:item.priority,
+                  status:item.status})
                 }
                 style={{marginTop: 10}}
               />

@@ -39,13 +39,13 @@ export default function WorkOrderDetails({route, navigation}) {
   };
 
   return (
-    <View style={{flex: 1, backgroundColor: '#F2F2F2'}}>
+    <View style={{flex: 1, backgroundColor: 'white'}}>
       <View>
         <CustomText
-          text={'Laptop Not Working'}
+          text= {'printer is not working'}
           textSize={20}
-          textWeight={700}
-          textColor="#00000080"
+          textWeight={800}
+          textColor="black"
           style={{marginLeft: 20, marginTop: 20}}
         />
         <View
@@ -55,16 +55,14 @@ export default function WorkOrderDetails({route, navigation}) {
             alignItems: 'center',
             marginLeft: 20,
           }}>
-          <Image
-            style={{height: 20, width: 20, tintColor: 'blue'}}
-            source={require('../assets/icons/flag.png')}
-          />
+         
           <CustomText
             text={'Low Priority'}
-            textSize={15}
+            textSize={16}
             textWeight={400}
+            
             textColor="#00000080"
-            style={{margin: 5, alignSelf: 'center'}}
+            style={{margin: 5, alignSelf: 'center',marginLeft:10}}
           />
         </View>
       </View>
@@ -94,7 +92,7 @@ export default function WorkOrderDetails({route, navigation}) {
           />
           <CustomText
             text={currentStatus}
-            textSize={15}
+            textSize={16}
             textWeight={700}
             textColor="#00000080"
             style={{marginLeft: 5}}
@@ -108,42 +106,44 @@ export default function WorkOrderDetails({route, navigation}) {
         </View>
       </TouchableOpacity>
 
-      <TouchableOpacity style={{marginLeft: '88%'}}>
-        <Image
-          style={{height: 20, width: 20, marginLeft: 5}}
-          source={require('../assets/icons/bookmark.png')}
-        />
-      </TouchableOpacity>
 
       <View
         style={{
           borderBottomColor: '#8f8c88',
           borderBottomWidth: 0.4,
-          margin: 15,
-        }}></View>
+    
+      
+          width:'100%'
+        }}>
+        </View>
 
       <View style={{padding: 20}}>
         <CustomText
           text={'Work Description'}
-          textSize={18}
+          textSize={20}
           textWeight={600}
-          textColor="#00000080"
+          textColor="black"
           style={{}}
         />
         <CustomText
           text={'Inspection for Dell Laptop not Working'}
           textSize={15}
           textWeight={400}
-          textColor="#00000080"
+          textColor="black"
           style={{marginTop: 10}}
         />
       </View>
+      
       <View
         style={{
           borderBottomColor: '#8f8c88',
           borderBottomWidth: 0.4,
-          margin: 15,
-        }}></View>
+    
+      
+          width:'100%'
+        }}>
+        </View>
+   
 
       <View style={{padding: 20}}>
         <View
@@ -156,36 +156,46 @@ export default function WorkOrderDetails({route, navigation}) {
             text={'Location'}
             textSize={18}
             textWeight={600}
-            textColor="#00000080"
+            textColor="black"
           />
-          <TouchableOpacity>
+          {/* <TouchableOpacity>
             <Image
               style={{height: 20, width: 20, marginLeft: 5}}
               source={require('../assets/icons/menu.png')}
             />
-          </TouchableOpacity>
+          </TouchableOpacity> */}
         </View>
 
         <CustomText
           text={'Building 2, Desk 4 , Unit 6, Selec HQ, Navi Mumbai.'}
           textSize={16}
           textWeight={400}
-          textColor="#00000080"
+          textColor="black"
         />
       </View>
+      
+      <View
+        style={{
+          borderBottomColor: '#8f8c88',
+          borderBottomWidth: 0.4,
+    
+      
+          width:'100%'
+        }}>
+        </View>
       <View style={{padding: 20}}>
         <CustomText
           text={'Asset'}
           textSize={18}
           textWeight={600}
-          textColor="#00000080"
+          textColor="black"
           style={{}}
         />
         <CustomText
           text={'Dell Laptop - 2376avgs'}
           textSize={15}
           textWeight={400}
-          textColor="#00000080"
+          textColor="black"
           style={{marginTop: 10}}
         />
       </View>
@@ -218,12 +228,7 @@ export default function WorkOrderDetails({route, navigation}) {
               textColor="#FFFFFF"
             />
           </View>
-          <View
-            style={{
-              borderBottomColor: '#8f8c88',
-              borderBottomWidth: 0.7,
-              margin: 15,
-            }}></View>
+         
 
           <TouchableOpacity
             onPress={() =>

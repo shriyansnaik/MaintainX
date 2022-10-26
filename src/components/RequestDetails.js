@@ -1,3 +1,4 @@
+/* eslint-disable prettier/prettier */
 import {View, Text, StyleSheet, Image, TouchableOpacity} from 'react-native';
 import React, {useState, useContext} from 'react';
 import {PriorityButton} from './common';
@@ -83,7 +84,7 @@ export default function RequestDetails({route}) {
 
                   marginLeft: 10,
                 }}>
-                {route.params.location}
+               {route.params.location}
               </Text>
             </View>
           </View>
@@ -119,10 +120,12 @@ const styles = StyleSheet.create({
     backgroundColor: '#C13F3F',
     elevation: 20,
     width: 110,
-    marginLeft: 225,
+    marginLeft: 260,
     borderRadius: 15,
     justifyContent: 'center',
     alignItems: 'center',
     marginTop: 5,
+
+   
   },
 });
