@@ -35,8 +35,8 @@ const WorkOrdersScreen = ({navigation}) => {
         },
       })
       .then(function (response) {
-        console.log(response.data.ticket);
-        setDATA(response.data.ticket);
+        console.log("Logging the response",response.data.tickets);
+        setDATA(response.data.tickets);
       })
       .catch(function (error) {
         console.log(error, 'Work Orders Screen');

@@ -93,12 +93,12 @@ export default function CreateRequestScreen({ navigation, route }) {
   };
 
   const submitTicket = () => {
-    console.log(title, description);
+    // console.log(title, description);
     const params = JSON.stringify({
       subject: title,
       description: description,
       asset_name: route.params.requestData.asset,
-      location: route.params.requestData.room + ' , ' + route.params.requestData.subdivision + ' , ' + route.params.requestData.unit
+      // location: route.params.requestData.room + ' , ' + route.params.requestData.subdivision + ' , ' + route.params.requestData.unit
     });
     axios
       .post(CREATE_TICKET_API, params, {
@@ -107,14 +107,14 @@ export default function CreateRequestScreen({ navigation, route }) {
           'access-token': `${accessToken}`,
         },
       })
-      .then(function (response) {
-        console.log(response.data);
+      .then( (response) =>{
+        console.log("nice log",response.data);
         console.log('done');
         // navigation.goBack();
       })
 
-      .catch(function (error) {
-        console.log(error, 'Axios error (create request screen)');
+      .catch( (error)=> {
+        console.log(error.message, 'Axios error (create request screen)');
         alert('something went wrong (create request screen)');
       });
   };
