@@ -1,4 +1,4 @@
-package com.selec_maintenance_app;
+package com.selec.maintainx;
 
 import com.facebook.react.ReactActivity;
 
