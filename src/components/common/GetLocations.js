@@ -1,7 +1,8 @@
-import { View, Text, FlatList } from 'react-native';
+/* eslint-disable prettier/prettier */
+import { View, Text, FlatList, TouchableOpacity } from 'react-native';
 import React, { useState } from 'react';
 import { GET_LOCATIONS } from '../../extras/APIS';
-import SettingsItem from './SettingsItem';
+import Location from './Location';
 
 export default function GetLocations({ navigation }) {
   const DATA = [
@@ -371,14 +372,29 @@ export default function GetLocations({ navigation }) {
       <FlatList
         data={DATA}
         renderItem={({ item }) => (
-          <SettingsItem
-            imageIcon={require('../../assets/icons/doublearrow.png')}
-            textTitle={'Unit - ' + item.unit_or_building + ', ' + item.locality}
-            onButtonPress={() => {
+
+          <Location        
+            textTitle={'Unit - ' + item.unit_or_building}
+            textSubtitle={item.locality}
+            onClick={() => {
               addToRequestData(item.unit_or_building)
               navigation.navigate('Get Subdivision', { DATA: item.subdivision, loc: item.unit_or_building, requestData: requestData })
             }}
           />
+    //      <View style={{height:70,backgroundColor:'white',justifyContent:'center',flexDirection:'column',marginTop:10,width:'90%',alignSelf:'center',borderRadius:15,}} >
+    //       <TouchableOpacity
+    //        onPress={() => {
+    //             addToRequestData(item.unit_or_building)
+    //             navigation.navigate('Get Subdivision', { DATA: item.subdivision, loc: item.unit_or_building, requestData: requestData })
+    //           }}  >
+
+    //       <Text style={{color:"black",fontWeight:'bold',marginLeft:20}}>{'Unit - ' + item.unit_or_building}</Text>
+    // <Text style={{marginLeft:20}}>{item.locality}</Text>
+    //       </TouchableOpacity>
+   
+
+    //       </View>
+
         )}
       // keyExtractor={(item) => item.id}
       />

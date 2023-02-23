@@ -1,4 +1,6 @@
-import React, {useState, useEffect, useContext} from 'react';
+/* eslint-disable prettier/prettier */
+/* eslint-disable react-native/no-inline-styles */
+import React, { useState, useEffect, useContext } from 'react';
 import {
   View,
   Text,
@@ -7,24 +9,26 @@ import {
   useWindowDimensions,
   ScrollView,
   BackHandler,
+  TouchableOpacity,
+  TextInput,
 } from 'react-native';
-import {CustomText} from './common';
+import { CustomText, } from './common';
 import CustomInput from './common/CustomInput';
+import ImagePic from './common/CustomInput';
 import CustomButton from './common//CustomButton';
-import {useNavigation} from '@react-navigation/native';
+import { useNavigation } from '@react-navigation/native';
 import axios from 'axios';
-import {LOGIN_SCREEN_API} from '../extras/APIS';
+import { LOGIN_SCREEN_API } from '../extras/APIS';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import {GlobalStateContext} from '../routes/GlobalStateProvider';
-
+import { GlobalStateContext } from '../routes/GlobalStateProvider';
 const LoginScreen = props => {
-  const {} = props;
-  const {} = styles;
-  const {setAccessToken, setRoleOfUser} = useContext(GlobalStateContext);
+  const { } = props;
+  const { } = styles;
+  const { setAccessToken, setRoleOfUser } = useContext(GlobalStateContext);
   const [username, setUsername] = useState();
   const [password, setPassword] = useState();
-
-  const {height} = useWindowDimensions();
+  const [show_password, setShowPassword] = useState(false);
+  const { height } = useWindowDimensions();
   const navigation = useNavigation();
 
   const onForgotPasswordPressed = () => {
@@ -36,6 +40,7 @@ const LoginScreen = props => {
   };
 
   const login = () => {
+    console.log("logging you in..." ,username, password);
     const params = JSON.stringify({
       username: username,
       password: password,
@@ -75,7 +80,7 @@ const LoginScreen = props => {
       <View style={styles.root}>
         <Image
           source={require('../assets/images/logo.png')}
-          style={[styles.logo, {height: height * 0.13}]}
+          style={[styles.logo, { height: height * 0.13 }]}
           resizeMode="contain"
         />
 
@@ -86,17 +91,43 @@ const LoginScreen = props => {
           setValue={setUsername}
         />
 
-        <CustomInput
-          placeholder="Password"
+        {/* <CustomInput
+            placeholder="Password"
+            value={password}
+            setValue={setPassword}
+            secureTextEntry={!show_password}
+          /> */}
+
+
+        <View style={{
+          backgroundColor: 'white',
+          width: '100%',borderColor: '#e8e8e8',
+          borderWidth: 1,
+          borderRadius: 5,
+       paddingHorizontal: 10,
+          marginVertical: 5, flexDirection: 'row',
+          justifyContent:'space-between'
+        }}>
+          <TextInput
+          placeholder='Password'
           value={password}
-          setValue={setPassword}
-          secureTextEntry
-        />
+          // setValue={setPassword}
+          onChangeText={(val)=>setPassword(val)}
+          secureTextEntry={!show_password}
+          style={{color:'gray'}}
+          />
+<TouchableOpacity
+onPress={()=>{setShowPassword(!show_password)}}>
+  <Image source={show_password ? require('../assets/icons/eye.png') : require('../assets/icons/hidden.png')} 
+  style={{height:20,width:20,alignSelf:'center',margin:15,}}/>
+</TouchableOpacity>
+        </View>
+
 
         <CustomButton
           text="Log In"
           onPress={() => login()}
-          // onPress={() => navigation.navigate('MainApp')}
+        // onPress={() => navigation.navigate('MainApp')}
         />
 
         <CustomButton

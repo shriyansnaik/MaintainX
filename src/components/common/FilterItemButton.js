@@ -8,7 +8,7 @@ const FilterItemButton = props => {
       <View>
         <Text style={styles.textStyle}>{textTitle}</Text>
         <Text style={styles.textdescStyle} >{textDesc}</Text>
-        <Image style={styles.imageStyle} source={imageIcon} />
+        <Image style={styles.imageStyle} source={imageIcon}  />
       </View>
     </TouchableOpacity>
   );
@@ -23,14 +23,16 @@ const styles = {
     // alignItems: 'center',
     // // width: '45%',
     // borderRadius: 10,
-    backgroundColor: '#1c1c1c50',
+    backgroundColor: '#fafafa',
     height: 155,
     width: 165,
     padding: 10,
-    borderRadius: 5,
+    borderRadius: 10,
     overflow: 'hidden',
-  	borderWidth: 1,
-    borderColor: "#e6e8eb",
+  	borderWidth: 2,
+    borderColor: "#e8e8e8",
+
+
   },
   textStyle: {
     color: 'black',
@@ -44,7 +46,7 @@ const styles = {
     width: 50,
     height: 50,
     resizeMode: 'contain',
-    
+     
     },
     textdescStyle:
     {

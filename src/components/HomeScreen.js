@@ -12,7 +12,7 @@ import React, {useContext, useEffect} from 'react';
 import {CustomText} from './common';
 import FilterItemButton from './common/FilterItemButton';
 import {GlobalStateContext} from '../routes/GlobalStateProvider';
-
+import LinearGradient from 'react-native-linear-gradient';
 const Homescreen = ({navigation}) => {
   function handleBackButtonClick() {
     BackHandler.exitApp();
@@ -108,8 +108,13 @@ const Homescreen = ({navigation}) => {
     <ScrollView style={{flex: 1, width: '100%'}}>
       <CreateScreenModal />
 
-      <View
-        style={{padding: 50, backgroundColor: '#F9B07B', alignItems: 'center'}}>
+      <View>
+       <LinearGradient
+       colors={[
+   'rgb(235,233,255)','rgb(191, 222, 250)'
+]}
+      style={{ padding: 50, alignItems: 'center' }}>
+
         <CustomText
           style={{marginBottom: 5}}
           textSize={18}
@@ -139,7 +144,7 @@ const Homescreen = ({navigation}) => {
           }}
           style={{
             padding: 10,
-            backgroundColor: '#C13F3F',
+            backgroundColor: '#0b6efc',
             borderRadius: 20,
             alignItems: 'center',
             width: 200,
@@ -151,7 +156,9 @@ const Homescreen = ({navigation}) => {
             text={'View my work'}
           />
         </TouchableOpacity>
+        </LinearGradient>
       </View>
+      
       <View>
         <View
           style={{
