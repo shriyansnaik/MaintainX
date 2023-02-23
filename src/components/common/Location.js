@@ -13,7 +13,9 @@ const Location = props => {
   } = props;
 
   return (
-    <TouchableOpacity onPress={onClick}>
+    <TouchableOpacity
+
+     onPress={onClick}>
       <View style={styles.viewStyle}>
       
         <View>
@@ -31,6 +33,7 @@ const Location = props => {
 const styles = {
   viewStyle: {
     height:90,backgroundColor:'white',justifyContent:'center',flexDirection:'column',marginTop:10,width:'90%',alignSelf:'center',borderRadius:15,
+    borderColor: "#e8e8e8", 	borderWidth: 2,
   },
   textStyle: {
     color: 'black',

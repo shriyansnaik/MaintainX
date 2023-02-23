@@ -1,4 +1,5 @@
-const address = 'http://192.168.29.175:3000';
+
+const address = 'http://192.168.0.107:3000';
 export const LOGIN_SCREEN_API = `${address}/login`;
 export const REQUESTS_API = `${address}/technician/ticketdisplay`;
 export const WORK_ORDERS_API = `${address}/technician/workorder`;
