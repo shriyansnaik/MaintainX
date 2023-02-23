@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "1042544328628",
+    "project_id": "selec-maintainence-project",
+    "storage_bucket": "selec-maintainence-project.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:1042544328628:android:756f52508bc12fa135bce1",
+        "android_client_info": {
+          "package_name": "com.selec.maintainx"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "1042544328628-upj70gt572fmvblf0tusdqbevaht4agl.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAg_SYhVupaCekRI5X0mhwVzE3LdkNAK6c"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "1042544328628-upj70gt572fmvblf0tusdqbevaht4agl.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
