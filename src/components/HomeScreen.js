@@ -8,13 +8,13 @@ import {
   Modal,
   BackHandler,
 } from 'react-native';
-import React, {useContext, useEffect} from 'react';
-import {CustomText} from './common';
+import React, { useContext, useEffect } from 'react';
+import { CustomText } from './common';
 import FilterItemButton from './common/FilterItemButton';
-import {GlobalStateContext} from '../routes/GlobalStateProvider';
+import { GlobalStateContext } from '../routes/GlobalStateProvider';
 import LinearGradient from 'react-native-linear-gradient';
-
-const Homescreen = ({navigation}) => {
+import GetLocations from './common/GetLocations';
+const Homescreen = ({ navigation }) => {
   function handleBackButtonClick() {
     BackHandler.exitApp();
   }
@@ -29,7 +29,7 @@ const Homescreen = ({navigation}) => {
       );
     };
   }, []);
-  const {modalVisible, setModalVisible, roleOfUser} =
+  const { modalVisible, setModalVisible, roleOfUser } =
     useContext(GlobalStateContext);
 
   const CreateScreenModal = () => {
@@ -98,7 +98,7 @@ const Homescreen = ({navigation}) => {
                 padding: 15,
               }}>
               <Image
-                style={{height: 25, width: 25, marginRight: 10}}
+                style={{ height: 25, width: 25, marginRight: 10 }}
                 source={require('../assets/icons/workorder.png')}
               />
               <CustomText text="Request" textWeight={500} textSize={18} />
@@ -109,162 +109,199 @@ const Homescreen = ({navigation}) => {
     );
   };
   return (
-    <ScrollView style={{flex: 1, width: '100%'}}>
+    <ScrollView style={{ flex: 1, width: '100%' }}>
       <CreateScreenModal />
+      {
+        roleOfUser === 'technician-internal' || roleOfUser === 'technician-external' ? (
+          <>
+            <View>
+              <LinearGradient
+                colors={['rgb(235,233,255)', 'rgb(191, 222, 250)']}
+                style={{ padding: 50, alignItems: 'center' }}>
+                <CustomText
+                  style={{ marginBottom: 5 }}
+                  textSize={18}
+                  textWeight={300}
+                  text={"Let's Get Started with"}
+                />
+                <CustomText
+                  style={{ marginBottom: 10 }}
+                  textSize={30}
+                  textWeight={400}
+                  text={" Today's Work "}
+                />
+                <Image
+                  style={{ height: 25, width: 25, padding: 15, marginBottom: 15 }}
+                  source={require('../assets/icons/calendar.png')}
+                />
+                <CustomText
+                  style={{ marginBottom: 10, color: 'black' }}
+                  textSize={15}
+                  textWeight={300}
+                  text={"Start with what's due today"}
+                />
+                <TouchableOpacity
+                  onPress={() => {
+                    navigation.navigate('WorkOrderScreen');
+                    // console.log(modalVisible);
+                  }}
+                  style={{
+                    padding: 10,
+                    backgroundColor: '#0b6efc',
+                    borderRadius: 20,
+                    alignItems: 'center',
+                    width: 200,
+                  }}>
+                  <CustomText
+                    textColor={'white'}
+                    textWeight={500}
+                    textSize={20}
+                    text={'View my work'}
+                  />
+                </TouchableOpacity>
+              </LinearGradient>
+            </View>
 
-      <View>
-        <LinearGradient
-          colors={['rgb(235,233,255)', 'rgb(191, 222, 250)']}
-          style={{padding: 50, alignItems: 'center'}}>
-          <CustomText
-            style={{marginBottom: 5}}
-            textSize={18}
-            textWeight={300}
-            text={"Let's Get Started with"}
-          />
-          <CustomText
-            style={{marginBottom: 10}}
-            textSize={30}
-            textWeight={400}
-            text={" Today's Work "}
-          />
-          <Image
-            style={{height: 25, width: 25, padding: 15, marginBottom: 15}}
-            source={require('../assets/icons/calendar.png')}
-          />
-          <CustomText
-            style={{marginBottom: 10, color: 'black'}}
-            textSize={15}
-            textWeight={300}
-            text={"Start with what's due today"}
-          />
-          <TouchableOpacity
-            onPress={() => {
-              navigation.navigate('WorkOrderScreen');
-              // console.log(modalVisible);
-            }}
-            style={{
-              padding: 10,
-              backgroundColor: '#0b6efc',
-              borderRadius: 20,
-              alignItems: 'center',
-              width: 200,
-            }}>
-            <CustomText
-              textColor={'white'}
-              textWeight={500}
-              textSize={20}
-              text={'View my work'}
-            />
-          </TouchableOpacity>
-        </LinearGradient>
-      </View>
+            <View>
+              <View
+                style={{
+                  flexDirection: 'row',
+                  justifyContent: 'space-between',
+                  padding: 10,
+                }}>
+                <CustomText text={'My Impact'} textSize={14} textWeight={800} />
+                <TouchableOpacity
+                  onPress={() => setModalVisible(!modalVisible)}
+                >
+                  <CustomText
+                    text={'See All Stats'}
+                    textSize={14}
+                    textColor="#5F4ACD"
+                    textWeight={800}
 
-      <View>
-        <View
-          style={{
-            flexDirection: 'row',
-            justifyContent: 'space-between',
-            padding: 10,
-          }}>
-          <CustomText text={'My Impact'} textSize={14} textWeight={800} />
-          <TouchableOpacity
-          // onPress={()=>setModalVisible(!modalVisible)}
-          >
-            <CustomText
-              text={'See All Stats'}
-              textSize={14}
-              textColor="#5F4ACD"
-              textWeight={800}
-            />
-          </TouchableOpacity>
-        </View>
-        <View
-          style={{
-            width: '90%',
-            alignSelf: 'center',
-            borderBottomColor: '#cfcfcf',
-            borderBottomWidth: 1,
-          }}
-        />
-        <View
-          style={{
-            flexDirection: 'row',
-            justifyContent: 'space-between',
-            padding: 10,
-          }}>
-          <CustomText
-            text={'On-time Completion'}
-            textSize={14}
-            textColor="#000000"
-          />
-          <CustomText
-            text={'97%'}
-            textSize={14}
-            // textColor="#5F4ACD"
-            textWeight={500}
-          />
-        </View>
-        <View
-          style={{
-            width: '90%',
-            alignSelf: 'center',
-            borderBottomColor: '#cfcfcf',
-            borderBottomWidth: 1,
-          }}
-        />
-      </View>
+                  />
+                </TouchableOpacity>
+              </View>
+              <View
+                style={{
+                  width: '90%',
+                  alignSelf: 'center',
+                  borderBottomColor: '#cfcfcf',
+                  borderBottomWidth: 1,
+                }}
+              />
+              <View
+                style={{
+                  flexDirection: 'row',
+                  justifyContent: 'space-between',
+                  padding: 10,
+                }}>
+                <CustomText
+                  text={'On-time Completion'}
+                  textSize={14}
+                  textColor="#000000"
+                />
+                <CustomText
+                  text={'97%'}
+                  textSize={14}
+                  // textColor="#5F4ACD"
+                  textWeight={500}
+                />
+              </View>
+              <View
+                style={{
+                  width: '90%',
+                  alignSelf: 'center',
+                  borderBottomColor: '#cfcfcf',
+                  borderBottomWidth: 1,
+                }}
+              />
+            </View>
 
-      {/* {roleOfUser === 'technician-internal' || 'technician-external' ? ( */}
-      {/* <> */}
-      <View>
-        <CustomText
-          text={'My Filters'}
-          textSize={14}
-          textWeight={600}
-          textColor={'#000000'}
-          style={{margin: 10, marginTop: 30}}
-        />
-      </View>
-      {/* <View> */}
-      <View
-        style={{
-          justifyContent: 'space-evenly',
-          flexDirection: 'row',
-          marginVertical: 10,
-        }}>
-        <FilterItemButton
-          textTitle="Past Due"
-          textDesc="Work Orders"
-          imageIcon={require('../assets/icons/pastdue.png')}
-        />
-        <FilterItemButton
-          textTitle="High Priority"
-          textDesc="Work Orders"
-          imageIcon={require('../assets/icons/flag.png')}
-        />
-      </View>
-      <View
-        style={{
-          justifyContent: 'space-evenly',
-          flexDirection: 'row',
-          marginHorizontal: 5,
-          marginVertical: 10,
-        }}>
-        <FilterItemButton
-          textTitle="Bookmarked"
-          textDesc="Work Orders"
-          imageIcon={require('../assets/icons/bookmark.png')}
-        />
-        <FilterItemButton
-          textTitle="Last Updated"
-          textDesc="Work Orders"
-          imageIcon={require('../assets/icons/triangle.png')}
-        />
-        {/* </View> */}
-      </View>
-      {/* </> */}
-      {/* ) : null} */}
+
+            <View>
+              <CustomText
+                text={'My Filters'}
+                textSize={14}
+                textWeight={600}
+                textColor={'#000000'}
+                style={{ margin: 10, marginTop: 30 }}
+              />
+            </View>
+            <View>
+              {console.log(roleOfUser, 'this is the role')}
+              <View
+                style={{
+                  justifyContent: 'space-evenly',
+                  flexDirection: 'row',
+                  marginVertical: 10,
+                }}>
+                <FilterItemButton
+                  textTitle="Past Due"
+                  textDesc="Work Orders"
+                  imageIcon={require('../assets/icons/pastdue.png')}
+                />
+                <FilterItemButton
+                  textTitle="High Priority"
+                  textDesc="Work Orders"
+                  imageIcon={require('../assets/icons/flag.png')}
+                />
+              </View>
+              <View
+                style={{
+                  justifyContent: 'space-evenly',
+                  flexDirection: 'row',
+                  marginHorizontal: 5,
+                  marginVertical: 10,
+                }}>
+                <FilterItemButton
+                  textTitle="Bookmarked"
+                  textDesc="Work Orders"
+                  imageIcon={require('../assets/icons/bookmark.png')}
+                />
+                <FilterItemButton
+                  textTitle="Last Updated"
+                  textDesc="Work Orders"
+                  imageIcon={require('../assets/icons/triangle.png')}
+                />
+              </View>
+            </View>
+          </>
+        ) :
+          <View style={{flex:1}}>
+            <LinearGradient
+              colors={['rgb(235,233,255)', 'rgb(191, 222, 250)']}
+              style={{ padding: 50, alignItems: 'center', flex:20 }}>
+              <CustomText
+                style={{ marginBottom: 15 }}
+                textSize={18}
+                textWeight={300}
+                text={"Start by creating new ticket"}
+              />
+          
+           
+              <TouchableOpacity
+                onPress={() => {
+                  navigation.navigate('Get Locations')
+                 
+                }}
+                style={{
+                  padding: 10,
+                  backgroundColor: '#0b6efc',
+                  borderRadius: 20,
+                  alignItems: 'center',
+                  width: 140,
+                }}>
+                <CustomText
+                  textColor={'white'}
+                  textWeight={500}
+                  textSize={15}
+                  text={'Create Request'}
+                />
+              </TouchableOpacity>
+            </LinearGradient>
+          </View>
+      }
     </ScrollView>
   );
 };
