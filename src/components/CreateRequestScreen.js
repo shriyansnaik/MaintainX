@@ -86,11 +86,11 @@ export default function CreateRequestScreen({navigation, route}) {
   };
 
   const submitTicket = () => {
-    // console.log(title, description);
+    // console.log(title, description,route.params.requestData._id);
     const params = JSON.stringify({
       subject: title,
       description: description,
-      asset_id: route.params.requestData.asset,
+      asset_id: route.params.requestData._id,
     });
     axios
       .post(CREATE_TICKET_API, params, {
@@ -102,7 +102,7 @@ export default function CreateRequestScreen({navigation, route}) {
       .then(response => {
         console.log('nice log', response.data);
         console.log('done');
-        // navigation.goBack();
+        navigation.navigate("Home")
       })
 
       .catch(error => {

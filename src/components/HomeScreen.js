@@ -215,8 +215,8 @@ const Homescreen = ({navigation}) => {
         />
       </View>
 
-      {/* {roleOfUser === 'technician-internal' || 'technician-external' ? ( */}
-      {/* <> */}
+      {roleOfUser === 'technician-internal' || roleOfUser === 'technician-external' ? (
+      <>
       <View>
         <CustomText
           text={'My Filters'}
@@ -263,8 +263,8 @@ const Homescreen = ({navigation}) => {
         />
         {/* </View> */}
       </View>
-      {/* </> */}
-      {/* ) : null} */}
+      </>
+      ) : null}
     </ScrollView>
   );
 };
