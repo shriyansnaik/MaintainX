@@ -13,12 +13,14 @@ import {CustomText} from './common';
 import FilterItemButton from './common/FilterItemButton';
 import {GlobalStateContext} from '../routes/GlobalStateProvider';
 import LinearGradient from 'react-native-linear-gradient';
+
 const Homescreen = ({navigation}) => {
   function handleBackButtonClick() {
     BackHandler.exitApp();
   }
 
   useEffect(() => {
+    console.log(roleOfUser);
     BackHandler.addEventListener('hardwareBackPress', handleBackButtonClick);
     return () => {
       BackHandler.removeEventListener(
@@ -27,7 +29,9 @@ const Homescreen = ({navigation}) => {
       );
     };
   }, []);
-  const {modalVisible, setModalVisible} = useContext(GlobalStateContext);
+  const {modalVisible, setModalVisible, roleOfUser} =
+    useContext(GlobalStateContext);
+
   const CreateScreenModal = () => {
     return (
       <Modal
@@ -109,56 +113,53 @@ const Homescreen = ({navigation}) => {
       <CreateScreenModal />
 
       <View>
-       <LinearGradient
-       colors={[
-   'rgb(235,233,255)','rgb(191, 222, 250)'
-]}
-      style={{ padding: 50, alignItems: 'center' }}>
-
-        <CustomText
-          style={{marginBottom: 5}}
-          textSize={18}
-          textWeight={300}
-          text={"Let's Get Started with"}
-        />
-        <CustomText
-          style={{marginBottom: 10}}
-          textSize={30}
-          textWeight={400}
-          text={" Today's Work "}
-        />
-        <Image
-          style={{height: 25, width: 25, padding: 15, marginBottom: 15}}
-          source={require('../assets/icons/calendar.png')}
-        />
-        <CustomText
-          style={{marginBottom: 10, color: 'black'}}
-          textSize={15}
-          textWeight={300}
-          text={"Start with what's due today"}
-        />
-        <TouchableOpacity
-          onPress={() => {
-            navigation.navigate('WorkOrderScreen');
-            // console.log(modalVisible);
-          }}
-          style={{
-            padding: 10,
-            backgroundColor: '#0b6efc',
-            borderRadius: 20,
-            alignItems: 'center',
-            width: 200,
-          }}>
+        <LinearGradient
+          colors={['rgb(235,233,255)', 'rgb(191, 222, 250)']}
+          style={{padding: 50, alignItems: 'center'}}>
           <CustomText
-            textColor={'white'}
-            textWeight={500}
-            textSize={20}
-            text={'View my work'}
+            style={{marginBottom: 5}}
+            textSize={18}
+            textWeight={300}
+            text={"Let's Get Started with"}
           />
-        </TouchableOpacity>
+          <CustomText
+            style={{marginBottom: 10}}
+            textSize={30}
+            textWeight={400}
+            text={" Today's Work "}
+          />
+          <Image
+            style={{height: 25, width: 25, padding: 15, marginBottom: 15}}
+            source={require('../assets/icons/calendar.png')}
+          />
+          <CustomText
+            style={{marginBottom: 10, color: 'black'}}
+            textSize={15}
+            textWeight={300}
+            text={"Start with what's due today"}
+          />
+          <TouchableOpacity
+            onPress={() => {
+              navigation.navigate('WorkOrderScreen');
+              // console.log(modalVisible);
+            }}
+            style={{
+              padding: 10,
+              backgroundColor: '#0b6efc',
+              borderRadius: 20,
+              alignItems: 'center',
+              width: 200,
+            }}>
+            <CustomText
+              textColor={'white'}
+              textWeight={500}
+              textSize={20}
+              text={'View my work'}
+            />
+          </TouchableOpacity>
         </LinearGradient>
       </View>
-      
+
       <View>
         <View
           style={{
@@ -213,6 +214,9 @@ const Homescreen = ({navigation}) => {
           }}
         />
       </View>
+
+      {/* {roleOfUser === 'technician-internal' || 'technician-external' ? ( */}
+      {/* <> */}
       <View>
         <CustomText
           text={'My Filters'}
@@ -222,7 +226,7 @@ const Homescreen = ({navigation}) => {
           style={{margin: 10, marginTop: 30}}
         />
       </View>
-
+      {/* <View> */}
       <View
         style={{
           justifyContent: 'space-evenly',
@@ -240,7 +244,6 @@ const Homescreen = ({navigation}) => {
           imageIcon={require('../assets/icons/flag.png')}
         />
       </View>
-
       <View
         style={{
           justifyContent: 'space-evenly',
@@ -258,7 +261,10 @@ const Homescreen = ({navigation}) => {
           textDesc="Work Orders"
           imageIcon={require('../assets/icons/triangle.png')}
         />
+        {/* </View> */}
       </View>
+      {/* </> */}
+      {/* ) : null} */}
     </ScrollView>
   );
 };

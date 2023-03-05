@@ -8,6 +8,7 @@ import WorkOrderStack from './WorkOrderStack';
 import RequestStack from './RequestStack';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import {GlobalStateContext} from '../routes/GlobalStateProvider';
+import MakeRequest from '../components/MakeRequest';
 
 const TabStackNav = createBottomTabNavigator();
 
@@ -128,7 +129,22 @@ const TabStack = route => {
           }}
         />
       ) : null}
-
+      {/* <TabStackNav.Screen
+        name="Make Request"
+        component={MakeRequest}
+        options={{
+          tabBarIcon: ({focused}) => (
+            <Image
+              source={require('../assets/icons/settings.png')}
+              style={{
+                height: 25,
+                width: 25,
+                tintColor: focused ? '#ffffff' : '#8c8c8c',
+              }}
+            />
+          ),
+        }}
+      /> */}
       <TabStackNav.Screen
         name="Settings"
         component={SettingScreen}

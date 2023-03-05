@@ -55,6 +55,7 @@ export default function CreateRequestScreen({navigation, route}) {
       const url = await storageRef.getDownloadURL();
       setImage(null);
       navigation.goBack();
+      console.log(url);
     } catch (e) {
       console.log(e);
     }
@@ -89,8 +90,7 @@ export default function CreateRequestScreen({navigation, route}) {
     const params = JSON.stringify({
       subject: title,
       description: description,
-      asset_name: route.params.requestData.asset,
-      // location: route.params.requestData.room + ' , ' + route.params.requestData.subdivision + ' , ' + route.params.requestData.unit
+      asset_id: route.params.requestData.asset,
     });
     axios
       .post(CREATE_TICKET_API, params, {
@@ -147,7 +147,7 @@ export default function CreateRequestScreen({navigation, route}) {
         {/* <TouchableOpacity disabled={!postFilled} onPress={() => submitTicket()}> */}
         <TouchableOpacity
           disabled={!postFilled}
-          onPress={() => imageUploadTest()}>
+          onPress={() => submitTicket()}>
           <Image
             source={require('../assets/icons/tick.png')}
             style={{
