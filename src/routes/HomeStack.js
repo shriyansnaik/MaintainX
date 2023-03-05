@@ -8,6 +8,9 @@ import GetRooms from '../components/common/GetRooms';
 import GetAssets from '../components/common/GetAssets';
 import {Image, TouchableOpacity, View} from 'react-native';
 import CreateRequestScreen from '../components/CreateRequestScreen';
+import Help from '../components/Help';
+import Contact from '../components/Contact';
+import About from '../components/About';
 const HomeStackNav = createNativeStackNavigator();
 
 const HomeStack = ({navigation}) => {
@@ -54,6 +57,13 @@ const HomeStack = ({navigation}) => {
         }}
       />
       <HomeStackNav.Screen name="SettingsScreen" component={SettingScreen} />
+      <HomeStackNav.Screen name="Help" component={Help} />
+      <HomeStackNav.Screen name="Contact" component={Contact} />
+      <HomeStackNav.Screen name="About" component={About} />
+
+      
+      
+
       <HomeStackNav.Screen
         name="Create Request"
         component={CreateRequestScreen}

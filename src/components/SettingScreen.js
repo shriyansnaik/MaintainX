@@ -6,8 +6,11 @@ import {useNavigation} from '@react-navigation/native';
 import SettingsItem from './common/SettingsItem';
 import {GlobalStateContext} from '../routes/GlobalStateProvider';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-
-const SettingScreen = () => {
+import Contact from './Contact';
+import Help from './Help';
+import About from './About';
+import Location from './common/Location';
+const SettingScreen = ({ navigation }) => {
   const {setAccessToken, setRoleOfUser} = useContext(GlobalStateContext);
   const nav = useNavigation();
 
@@ -38,17 +41,23 @@ const SettingScreen = () => {
         textSubtitle="Edit Profile"
         profileIcon={true}
       />
+
       <SettingsItem
         imageIcon={require('../assets/icons/about.png')}
         textTitle="About Selec"
+        onButtonPress={() =>  navigation.navigate('About')}
       />
+
       <SettingsItem
         imageIcon={require('../assets/icons/help.png')}
         textTitle="Help"
+        onButtonPress={() =>  navigation.navigate('Help')}
       />
       <SettingsItem
         imageIcon={require('../assets/icons/contact.png')}
         textTitle="Contact us"
+        onButtonPress={() =>  navigation.navigate('Contact')}
+
       />
       <SettingsItem
         imageIcon={require('../assets/icons/logout.png')}
