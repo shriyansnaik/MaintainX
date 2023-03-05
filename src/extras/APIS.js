@@ -7,7 +7,7 @@ export const CREATE_TICKET_API = `${address}/requestee/add_ticket`;
 export const CLOSE_WORK_ORDER_API = `${address}/technician/closeTicket`;
 export const UPLOAD_IMAGE = `${address}/technician/upload`;
 // export const GET_LOCATIONS=`${address}/requestee/getAssetLocation`;
-export const GET_LOCATIONS=`${address}/admin/getLocation`;
+export const GET_LOCATIONS=`${address}/requestee/location`;
 
 // accepted (boolean)
 
