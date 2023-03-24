@@ -2,16 +2,30 @@
 import {View, Text, Image} from 'react-native';
 import React, {useContext} from 'react';
 import {useNavigation} from '@react-navigation/native';
-
+import {REQUESTS_API} from '../extras/APIS';
 import SettingsItem from './common/SettingsItem';
 import {GlobalStateContext} from '../routes/GlobalStateProvider';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import Contact from './Contact';
-import Help from './Help';
-import About from './About';
-import Location from './common/Location';
 const SettingScreen = ({ navigation }) => {
   const {setAccessToken, setRoleOfUser} = useContext(GlobalStateContext);
+
+  const getRequests = () => {
+    console.log(accessToken);
+    axios
+      .get(REQUESTS_API, {
+        headers: {
+          'access-token': accessToken,
+        },
+      })
+      .then(function (response) {
+        setDATA(response.data.tickets);
+        // console.log('Data has arrived', response.data);
+      })
+      .catch(function (error) {
+        console.error(error.response.data, 'sETTING sCREEN');
+      });
+  };
+
   const nav = useNavigation();
 
   const clearUserData = async () => {

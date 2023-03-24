@@ -1,4 +1,5 @@
-const address = 'https://selec-maintanence-project-production.up.railway.app';
+// const address = 'https://selec-maintanence-project-production.up.railway.app';
+const address='http://192.168.137.1:3000'
 export const LOGIN_SCREEN_API = `${address}/login`;
 export const REQUESTS_API = `${address}/technician/ticketdisplay`;
 export const WORK_ORDERS_API = `${address}/technician/workorder`;

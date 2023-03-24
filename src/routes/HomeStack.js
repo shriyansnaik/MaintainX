@@ -1,3 +1,4 @@
+/* eslint-disable prettier/prettier */
 import * as React from 'react';
 import {createNativeStackNavigator} from '@react-navigation/native-stack';
 import HomeScreen from '../components/HomeScreen';
@@ -56,10 +57,10 @@ const HomeStack = ({navigation}) => {
           headerTitle: '',
         }}
       />
-      <HomeStackNav.Screen name="SettingsScreen" component={SettingScreen} />
-      <HomeStackNav.Screen name="Help" component={Help} />
+      <HomeStackNav.Screen name="SettingsScreen" component={SettingScreen}   options={{headerShown: false}}  />
+      {/* <HomeStackNav.Screen name="Help" component={Help} />
       <HomeStackNav.Screen name="Contact" component={Contact} />
-      <HomeStackNav.Screen name="About" component={About} />
+      <HomeStackNav.Screen name="About" component={About} /> */}
 
       
 

@@ -1,4 +1,4 @@
-import { StyleSheet, Text, View } from 'react-native'
+import { StyleSheet, Text, View,  Linking, } from 'react-native'
 import React from 'react'
 import {CustomText, PriorityButton} from '../components/common';
 export default function Help() {
@@ -11,7 +11,7 @@ export default function Help() {
             textSize={14}
             textColor="black"
          />
-         
+ 
       </View>
   
 

@@ -1,3 +1,5 @@
+/* eslint-disable prettier/prettier */
+/* eslint-disable react-native/no-inline-styles */
 import {
   View,
   Text,
@@ -5,6 +7,8 @@ import {
   TouchableOpacity,
   Image,
   ScrollView,
+  Alert,
+  ToastAndroid
 } from 'react-native';
 import React, {useState, useEffect, useContext} from 'react';
 import {CustomText, PriorityButton} from '../components/common';
@@ -46,7 +50,6 @@ export default function CreateRequestScreen({navigation, route}) {
       console.log(
         `${taskSnapshot.bytesTransferred} transferred out of ${taskSnapshot.totalBytes}`,
       );
-
     });
 
     try {
@@ -56,6 +59,7 @@ export default function CreateRequestScreen({navigation, route}) {
       setImage(null);
       navigation.goBack();
       console.log(url);
+      
     } catch (e) {
       console.log(e);
     }
@@ -101,8 +105,9 @@ export default function CreateRequestScreen({navigation, route}) {
       })
       .then(response => {
         console.log('nice log', response.data);
+        ToastAndroid.show('Ticket Created Successfully!', ToastAndroid.LONG,ToastAndroid.UP );  
         console.log('done');
-        navigation.navigate("Home")
+        navigation.navigate('Home');
       })
 
       .catch(error => {
@@ -145,9 +150,7 @@ export default function CreateRequestScreen({navigation, route}) {
         </TouchableOpacity>
 
         {/* <TouchableOpacity disabled={!postFilled} onPress={() => submitTicket()}> */}
-        <TouchableOpacity
-          disabled={!postFilled}
-          onPress={() => submitTicket()}>
+        <TouchableOpacity disabled={!postFilled} onPress={() => submitTicket()}>
           <Image
             source={require('../assets/icons/tick.png')}
             style={{

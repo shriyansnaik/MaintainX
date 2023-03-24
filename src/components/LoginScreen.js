@@ -11,6 +11,7 @@ import {
   BackHandler,
   TouchableOpacity,
   TextInput,
+  ActivityIndicator,  ToastAndroid
 } from 'react-native';
 import { CustomText, } from './common';
 import CustomInput from './common/CustomInput';
@@ -54,6 +55,7 @@ const LoginScreen = props => {
       .then(function (response) {
         // console.log(response.data);
         storeData(response.data);
+        ToastAndroid.show('you have succefully login!', ToastAndroid.LONG,ToastAndroid.UP );  
         navigation.navigate('MainApp');
       })
 
@@ -78,6 +80,7 @@ const LoginScreen = props => {
   return (
     <ScrollView showsVerticalScrollIndicator={false}>
       <View style={styles.root}>
+      {/* <ActivityIndicator size="small" color="#0000ff" /> */}
         <Image
           source={require('../assets/images/logo.png')}
           style={[styles.logo, { height: height * 0.13 }]}

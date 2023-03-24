@@ -9,6 +9,7 @@ import RequestStack from './RequestStack';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import {GlobalStateContext} from '../routes/GlobalStateProvider';
 import MakeRequest from '../components/MakeRequest';
+import SettingStack from './SettingStack';
 
 const TabStackNav = createBottomTabNavigator();
 
@@ -147,7 +148,7 @@ const TabStack = route => {
       /> */}
       <TabStackNav.Screen
         name="Settings"
-        component={SettingScreen}
+        component={SettingStack}
         options={{
           tabBarIcon: ({focused}) => (
             <Image
@@ -159,6 +160,7 @@ const TabStack = route => {
               }}
             />
           ),
+          headerShown: false,
         }}
       />
     </TabStackNav.Navigator>
